@@ -1,6 +1,6 @@
 <template>
     <div class="block">
-      <h1 class="is-large">Initial Setup</h1>
+      <h1 class="title is-1">Initial Setup</h1>
       <nav class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
     <a class="navbar-item" href="https://bulma.io">
