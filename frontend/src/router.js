@@ -1,125 +1,103 @@
 import Vue from 'vue'
 import vueRouter from 'vue-router'
-// main views
-import admin from './views/admin.vue'
-import user from './views/user.vue'
-//user components
-import Login from './components/login.vue'
-import Register from './components/register.vue'
-import Home from './components/home.vue'
-import Checkout from './components/checkout.vue'
-import allProduct from './components/all_product.vue'
-import Career from './components/career.vue'
-import productPage from './components/product_page.vue'
-import Contact from './components/contact.vue'
-import catProduct from './components/cat_product.vue'
-import About from './components/about.vue'
-//admin components
-import adminHome from './components/admin/adminHome.vue'
-import productPanel from './components/admin/product_panel.vue'
-import categoryPanel from './components/admin/category_panel.vue'
-import addProduct from './components/admin/add_product.vue'
-import addCategory from './components/admin/add_category.vue'
-import editProduct from './components/admin/edit_product.vue'
-import editCategory from './components/admin/edit_category.vue'
 
 Vue.use(vueRouter);
 
 const routes=[
   {
     path:'/',
-    component:user,
+    component:()=>import('./views/user.vue'),
     children:[
       {
         path:'',
         name:"Home",
-        component:Home
+        component:()=>import('./components/home.vue')
       },
       {
         path:'about-us',
         name:"About",
-        component:About
+        component:()=>import('./components/about.vue')
       },
       {
         path:'all-product',
         name:"allProduct",
-        component:allProduct
+        component:()=>import('./components/all_product.vue')
       },
       {
         path:'careers',
         name:"Career",
-        component:Career
+        component:()=>import('./components/career.vue')
       },
       {
         path:'checkout',
         name:"Checkout",
-        component:Checkout
+        component:()=>import('./components/checkout.vue')
       },
       {
         path:'cat-product',
         name:"catProduct",
-        component:catProduct
+        component:()=>import('./components/cat_product.vue')
       },
       {
         path:'contact',
         name:"Contact",
-        component:Contact
+        component:()=>import('./components/contact.vue')
       },
       {
         path:'product-page',
         name:"productPage",
-        component:productPage
+        component:()=>import('./components/product_page.vue')
       },
       {
         path:'login',
         name:"Login",
-        component:Login
+        component:()=>import('./components/login.vue')
       },
       {
         path:'register',
         name:"Register",
-        component:Register
+        component:()=>import('./components/register.vue')
       }
     ]
   },
   {
     path:'/admin',
-    component:admin,
+    component:()=>import('./views/admin.vue'),
     children:[
       {
         path:'',
         name:"adminHome",
-        component:adminHome
+        component:()=>import('./components/admin/adminHome.vue')
       },
       {
         path:'products',
         name:"productPanel",
-        component:productPanel
+        component:()=>import('./components/admin/product_panel.vue')
       },
       {
         path:'categories',
         name:"categoryPanel",
-        component:categoryPanel
+        component:()=>import('./components/admin/category_panel.vue')
       },
       {
         path:'add-product',
         name:"addProduct",
-        component:addProduct
+        component:()=>import('./components/admin/add_product.vue')
       },
       {
         path:'edit-product',
         name:"editProduct",
-        component:editProduct
+        component:()=>import('./components/admin/edit_product.vue')
       },
       {
         path:'add-category',
         name:"addCategory",
-        component:addCategory
+        component:()=>import('./components/admin/add_category.vue')
       },
       {
         path:'edit-category',
         name:"editCategory",
-        component:editCategory
+        component:()=>import('./components/admin/edit_category.vue')
       }
     ]
   }
