@@ -1,6 +1,5 @@
 <template>
   <div class="block">
-      <h1 class="title is-1">Admin</h1>
       <adminHeader></adminHeader>
         <router-view></router-view>
       <adminFooter></adminFooter>

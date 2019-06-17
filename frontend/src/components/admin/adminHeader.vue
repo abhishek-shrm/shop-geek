@@ -1,18 +1,82 @@
 <template>
-  <div class="block">
-      <h1 class="title is-1">Admin Header</h1>
-  </div>  
+  <div class="adminHeader">
+    <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a id="brand" class="navbar-item" href="/" target="_blank">
+          <img src="../../assets/logo2.png" width="112" height="52">
+        </a>
+
+        <a role="button" class="navbar-burger burger" @click="toggleClass" aria-label="menu" aria-expanded="false"
+          data-target="navbarBasicExample">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+          <a class="navbar-item" href="/admin">
+            Home
+          </a>
+
+          <a class="navbar-item" href="/admin/products">
+            Categories
+          </a>
+
+          <a class="navbar-item" href="/admin/categories">
+            Products
+          </a>
+        </div>
+
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <div class="buttons">
+              <a class="button is-primary">
+                <strong>Sign up</strong>
+              </a>
+              <a class="button is-light">
+                Log in
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
 </template>
 
 <script>
-export default {
-  
-}
+  export default {
+
+    data() {
+      return {
+
+      }
+    },
+    methods: {
+      toggleClass() {
+        document.querySelector('.navbar-burger').classList.toggle('is-active');
+        document.querySelector('.navbar-menu').classList.toggle('is-active');
+      },
+      toggleDrop() {
+
+      }
+    }
+
+  }
+
 </script>
 
 <style lang="scss" scoped>
-@import "~bulma/sass/utilities/_all";
+  @import "~bulma/sass/utilities/_all";
 
-@import "~bulma";
-@import "~buefy/src/scss/buefy";
+  #brand {
+    padding: 0;
+    padding-left: 1em;
+  }
+
+  @import "~bulma";
+  @import "~buefy/src/scss/buefy";
+
 </style>

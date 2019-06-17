@@ -23,6 +23,8 @@ export default {
 <style lang="scss" scoped>
 @import "~bulma/sass/utilities/_all";
 
+
+
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
 </style>
