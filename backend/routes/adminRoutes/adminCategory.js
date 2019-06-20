@@ -2,7 +2,7 @@ var express=require('express');
 var router=express.Router();
 var Category=require('../../models/category');
 
-//Get categories
+//GET categories
 router.get('/',(req,res)=>{
   Category.find({}).sort({sorting:1}).exec((err,cats)=>{
     if(err){
@@ -12,6 +12,28 @@ router.get('/',(req,res)=>{
     res.send(cats);
     }
   });
+});
+
+//POST reorder categories
+router.post('/reorder-category',(req,res)=>{
+  var ids=req.body.ids;
+  var id=req.body.id;
+  var count=0;
+  for(var i=0;i<ids.length;i++){
+    var elementID=ids[i];
+    count++;
+    //IIFE for changing sort order of categories because node is async
+    (function(count){
+      Category.findById(elementID,(err,cat)=>{
+        cat.sorting=count;
+        cat.save(err=>{
+          if(err){
+            console.log(err);
+          }
+        });
+      });
+    })(count);
+  }
 });
 
 //Exports
