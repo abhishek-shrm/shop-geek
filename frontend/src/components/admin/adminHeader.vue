@@ -20,11 +20,11 @@
             Home
           </a>
 
-          <a class="navbar-item" href="/admin/products">
+          <a class="navbar-item" href="/admin/categories">
             Categories
           </a>
 
-          <a class="navbar-item" href="/admin/categories">
+          <a class="navbar-item" href="/admin/products">
             Products
           </a>
         </div>
@@ -43,6 +43,8 @@
         </div>
       </div>
     </nav>
+
+    <flash-message class="myCustomClass"></flash-message>
   </div>
 </template>
 
@@ -53,6 +55,9 @@
       return {
 
       }
+    },
+    created(){
+
     },
     methods: {
       toggleClass() {
@@ -74,6 +79,10 @@
   #brand {
     padding: 0;
     padding-left: 1em;
+  }
+
+  .myCustomClass{
+    margin-top: 4em;
   }
 
   @import "~bulma";

@@ -3,12 +3,21 @@ var path=require('path');
 var bodyParser= require('body-parser');
 var cors=require('cors');
 var mongoose=require('mongoose');
+var session=require('express-session');
+var expressValidator=require('express-validator');
 
 //Init app
 var app=express();
 
 app.use(express.static(path.join(__dirname,'public')));
+app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
+app.use(session({
+  secret:'secret developer',
+  resave:true,
+  saveUninitialized:true,
+  //cookie:{secure:true}
+}));
 app.use(cors());
 
 require('dotenv').config();
@@ -20,10 +29,22 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log('Connected to MongoDB');
 });
+var Category=require('./models/category');
 
 app.get('/',(req,res)=>{
   res.send('server is running');
 });
+
+//Routes
+var adminCategory=require('./routes/adminRoutes/adminCategory');
+var addCategory=require('./routes/adminRoutes/addCategory');
+var editCategory=require('./routes/adminRoutes/editCategory');
+
+//Middlewares
+app.use('/admin/categories',adminCategory);
+app.use('/admin/add-category',addCategory);
+app.use('/admin/edit-category',editCategory);
+
 
 //Start the server
 var port=3000;
