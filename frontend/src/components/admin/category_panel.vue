@@ -18,20 +18,20 @@
           <tr v-for="abc in ab" :key="abc._id" :id="abc._id" :class="abc.slug">
             <td scope="row">{{abc.title}}</td>
             <td>
-              <a href="/admin/edit-category" class="button is-rounded is-small is-info">
+              <router-link :to="{name:'editCategory',params:{id:abc._id}}"  class="button is-rounded is-small is-info" >
                 <span>Edit</span>
                 <span class="icon is-small">
                   <i class="fa fa-edit"></i>
                 </span>
-              </a>
+              </router-link>
             </td>
             <td>
-              <a href="/admin/delete-category" class="button is-rounded is-small is-danger">
+              <button class="button is-rounded is-small is-danger" @click="deleteCategory(abc._id)">
                 <span>Delete</span>
                 <span class="icon is-small">
                   <i class="fa fa-times"></i>
                 </span>
-              </a>
+              </button>
             </td>
           </tr>
         </draggable>
@@ -61,6 +61,9 @@
       API().get('admin/categories')
         .then(res => {
           this.ab = res.data;
+        })
+        .catch(error=>{
+          console.log(error);
         });
     },
     methods:{
@@ -72,7 +75,24 @@
           ids:this.ab.map(element=>element._id)
         }).then(res=>{
           console.log(res);
+        })
+        .catch(error=>{
+          console.log(error);
         });
+      },
+      deleteCategory(id){
+        if(confirm("Do you really want to delete this category?")){
+          API().get(`admin/delete-category/${id}`)
+          .then(res=>{
+            if(res.data.success){
+              this.$router.push({name:'categoryPanel'});
+              this.flash(res.data.success,'success');
+            }
+          })
+          .catch(error=>{
+            console.log(error);
+          });
+        }
       }
     }
 

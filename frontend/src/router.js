@@ -95,7 +95,7 @@ const routes=[
         component:()=>import('./components/admin/add_category.vue')
       },
       {
-        path:'edit-category',
+        path:'edit-category/:id',
         name:"editCategory",
         component:()=>import('./components/admin/edit_category.vue')
       }

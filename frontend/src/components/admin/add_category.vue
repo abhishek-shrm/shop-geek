@@ -40,6 +40,9 @@ import API from '../../api'
             this.flash(res.data.success,'success');
             this.category='';
           }
+        })
+        .catch(error=>{
+          console.log(error);
         });
       }
     }

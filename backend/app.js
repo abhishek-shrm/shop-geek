@@ -29,21 +29,22 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log('Connected to MongoDB');
 });
+
+//models
 var Category=require('./models/category');
 
-app.get('/',(req,res)=>{
-  res.send('server is running');
-});
 
 //Routes
 var adminCategory=require('./routes/adminRoutes/adminCategory');
 var addCategory=require('./routes/adminRoutes/addCategory');
 var editCategory=require('./routes/adminRoutes/editCategory');
+var deleteCategory=require('./routes/adminRoutes/deleteCategory');
 
 //Middlewares
 app.use('/admin/categories',adminCategory);
 app.use('/admin/add-category',addCategory);
 app.use('/admin/edit-category',editCategory);
+app.use('/admin/delete-category',deleteCategory);
 
 
 //Start the server
