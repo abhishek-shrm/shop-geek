@@ -8,8 +8,10 @@ import axios from 'axios'
 import VueFlashMessage from 'vue-flash-message';
 Vue.use(VueFlashMessage);
 require('vue-flash-message/dist/vue-flash-message.min.css');
+import CKEditor from '@ckeditor/ckeditor5-vue';
 
 Vue.use(Buefy);
+Vue.use( CKEditor );
 
 Vue.config.productionTip = false
 

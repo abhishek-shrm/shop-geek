@@ -5,11 +5,13 @@ var cors=require('cors');
 var mongoose=require('mongoose');
 var session=require('express-session');
 var expressValidator=require('express-validator');
+var fileUpload=require('express-fileupload');
 
 //Init app
 var app=express();
 
 app.use(express.static(path.join(__dirname,'public')));
+app.use(fileUpload());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 app.use(session({
@@ -32,6 +34,7 @@ db.once('open', function() {
 
 //models
 var Category=require('./models/category');
+var Product=require('./models/product');
 
 
 //Routes
@@ -39,12 +42,16 @@ var adminCategory=require('./routes/adminRoutes/adminCategory');
 var addCategory=require('./routes/adminRoutes/addCategory');
 var editCategory=require('./routes/adminRoutes/editCategory');
 var deleteCategory=require('./routes/adminRoutes/deleteCategory');
+var adminProduct=require('./routes/adminRoutes/adminProduct');
+var addProduct=require('./routes/adminRoutes/addProduct');
 
 //Middlewares
 app.use('/admin/categories',adminCategory);
 app.use('/admin/add-category',addCategory);
 app.use('/admin/edit-category',editCategory);
 app.use('/admin/delete-category',deleteCategory);
+app.use('/admin/add-product',addProduct);
+app.use('/admin/products',adminProduct);
 
 
 //Start the server
