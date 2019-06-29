@@ -28,7 +28,7 @@
       <div class="field">
         <label class="label">Price</label>
         <p class="control has-icons-left has-icons-right">
-          <input class="input" v-model="price" type="text" placeholder="Price">
+          <input class="input" v-model="price" type="number" placeholder="Price">
           <span class="icon is-left">
             <i class="fa fa-inr"></i>
           </span>
@@ -39,7 +39,7 @@
       </div>
       <div class="file field">
         <label class="file-label">
-          <input class="file-input" type="file" name="image" id="img">
+          <input class="file-input" type="file" name="image" @change="onFileChange">
           <span class="file-cta">
             <span class="file-icon">
               <i class="fa fa-upload"></i>
@@ -48,12 +48,20 @@
               Choose an Image
             </span>
           </span>
+          <span class="file-name" v-if="fileName">
+            {{fileName}}
+          </span>
         </label>
       </div>
-      <div class="field">
-        <figure class="image is-128x128">
-          <img src="#" id="imgPreview">
+      <div class="field" v-if="url">
+        <figure class="image ">
+          <img :src="url" v-if="url" id="imgPreview">
         </figure>
+      </div>
+      <div class="field">
+        <div class="control">
+          <button class="button is-primary" :disabled="isDisabled" @click="submitProduct">Submit</button>
+        </div>
       </div>
     </div>
   </section>
@@ -71,14 +79,70 @@
         price: '',
         category: '',
         editor: ClassicEditor,
-        categoryResponses: ''
+        categoryResponses: '',
+        url: '',
+        fileName: '',
+        image:''
       }
     },
     created() {
       API().get('admin/categories')
         .then(res => {
           this.categoryResponses = res.data;
+        })
+        .catch(error=>{
+          console.log(error);
         });
+    },
+    methods: {
+      onFileChange(e) {
+        this.image = e.target.files[0];
+        this.url = URL.createObjectURL(this.image);
+        this.fileName = this.image.name;
+      },
+      submitProduct(){
+        let formData=new FormData();
+        formData.append('image',this.image);
+        formData.append('title',this.title);
+        formData.append('description',this.description);
+        formData.append('price',this.price);
+        formData.append('category',this.category);
+
+        let config={
+          headers:{
+            'Content-Type': 'multipart/form-data'
+          }
+        };
+        
+        API().post('admin/add-product',formData,config)
+        .then(res=>{
+          console.log(res.data);
+          if(res.data.errors){
+            if(res.data.errors[0].msg){
+              this.flash(res.data.errors[0].msg,'error');
+            }else if(res.data.errors){
+              this.flash(res.data.errors,'error');
+            }
+          }else if(res.data.success){
+            this.flash(res.data.success,'success');
+            this.title='';
+            this.image='';
+            this.description='';
+            this.price='';
+            this.category='';
+            this.url='';
+            this.fileName='';
+          }
+        })
+        .catch(error=>{
+          console.log(error);
+        });
+      }
+    },
+    computed: {
+      isDisabled(){
+        return this.title.length<2 || this.category.length<2 || this.description.length<2 || this.price==0;
+      }
     }
   }
 
@@ -99,6 +163,11 @@
   .formInput {
     margin: auto 2em;
     margin-bottom: 3em;
+  }
+  
+  #imgPreview{
+    width:128px;
+    height:128px;
   }
 
   @import "~bulma";

@@ -9,7 +9,7 @@ var ProductSchema=mongoose.Schema({
   slug:{
     type:String
   },
-  desc:{
+  description:{
     type:String,
     required:true
   },

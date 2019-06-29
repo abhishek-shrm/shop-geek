@@ -1,42 +1,95 @@
 var express=require('express');
 var router=express.Router();
+var Product=require('../../models/product');
 var Category=require('../../models/category');
+var mkdirp = require('mkdirp');
+var fs = require('fs-extra');
+var resizeImg = require('resize-img');
+
 
 router.post('/',(req,res)=>{
 
   var title=req.body.title;
   var slug=title.replace(/\s+/g,'-').toLowerCase();
+  var description=req.body.description;
+  var price=req.body.price;
+  var category=req.body.category;
+  var imageFile;
 
-  Category.findOne({slug:slug},(err,cat)=>{
-    if(cat){
-      res.send({
-        title:title,
-        error:'Category already exists, please choose another'
-      });
-    }else{
-      var category=new Category({
-        title:title,
-        slug:slug,
-        sorting:100
-      });
-      category.save(err=>{
-        if(err){
-          console.log(err);
-        }else{
-          Category.find({}).sort({sorting:1}).exec((err,cats)=>{
-            if(err){
-              console.log(err);
-            }else{
+  //so that expressValidator does not throw error
+  if(req.files.image!=null){
+    imageFile=req.files.image.name;
+  }else if(req.files.image==null){
+    imageFile='';
+  }
+
+  req.checkBody('image','Uploaded file is not an image').isImage(imageFile);
+
+  var errors=req.validationErrors();
+
+  if(errors){
+    res.send({
+      errors:errors,
+      title:title,
+      description:description,
+      price:price,
+      category:category
+    });
+  }else{
+    Product.findOne({slug:slug},(err,p)=>{
+      if(p){
+        res.send({
+          errors:'Product already exists in database!',
+          title:title,
+          description:description,
+          price:price,
+          category:category
+        });
+      }else{
+
+        var priceFlt=parseFloat(price).toFixed(2);
+
+        var product=new Product({
+          title:title,
+          slug:slug,
+          description:description,
+          category:category,
+          price:priceFlt,
+          image:imageFile
+        });
+
+        product.save(err=>{
+          if(err){
+            console.log(err);
+          }else{
+
+            mkdirp('public/product_images/'+product._id,err=>{
+              return console.log(err);
+            });
+            mkdirp('public/product_images/'+product._id+'/gallery',err=>{
+              return console.log(err);
+            });
+            mkdirp('public/product_images/'+product._id+'/gallery/thumbs',err=>{
+              return console.log(err);
+            });
+
+            if(imageFile!=''){
+              var productImage=req.files.image;
+              var path='public/product_images/'+product._id+'/'+imageFile;
+
+              productImage.mv(path,err=>{
+                return console.log(err);
+              });
+
               res.send({
-                title:title,
-                success:'Category added successfully'
+                success:'Product added successfully!!'
               });
             }
-          });
-        }
-      });
-    }
-  });
+          }
+        })
+      }
+    });
+  }
 
 });
 
