@@ -5,6 +5,7 @@ var Category=require('../../models/category');
 var mkdirp = require('mkdirp');
 var fs = require('fs-extra');
 var resizeImg = require('resize-img');
+const AWS= require('aws-sdk');
 
 
 router.post('/',(req,res)=>{
@@ -62,31 +63,49 @@ router.post('/',(req,res)=>{
           if(err){
             console.log(err);
           }else{
-
-            mkdirp('public/product_images/'+product._id,err=>{
-              return console.log(err);
-            });
-            mkdirp('public/product_images/'+product._id+'/gallery',err=>{
-              return console.log(err);
-            });
-            mkdirp('public/product_images/'+product._id+'/gallery/thumbs',err=>{
-              return console.log(err);
-            });
+            // mkdirp('public/product_images/'+product._id,err=>{
+            //   return console.log(err);
+            // });
+            // mkdirp('public/product_images/'+product._id+'/gallery',err=>{
+            //   return console.log(err);
+            // });
+            // mkdirp('public/product_images/'+product._id+'/gallery/thumbs',err=>{
+            //   return console.log(err);
+            // });
 
             if(imageFile!=''){
-              var productImage=req.files.image;
-              var path='public/product_images/'+product._id+'/'+imageFile;
+              var productImage=req.files.image.data;
+              // var path='public/product_images/'+product._id+'/'+imageFile;
 
-              productImage.mv(path,err=>{
-                return console.log(err);
-              });
+              // productImage.mv(path,err=>{
+              //   return console.log(err);
+              // });
+              var s3 = new AWS.S3();
 
-              res.send({
-                success:'Product added successfully!!'
+              var myKey=product._id+'/'+product.image;
+
+              var params = {
+                Bucket: process.env.BUCKET,
+                Body : productImage,
+                Key : `${myKey}`
+              };
+
+              s3.upload(params,(err,data)=>{
+                if(err){
+                  console.log(err);
+                }
+                if(data){
+                  res.send({
+                    success:'Product added successfully!!'
+                  });
+                }
               });
+              // res.send({
+              //   success:'Product added successfully!!'
+              // });
             }
           }
-        })
+        });
       }
     });
   }

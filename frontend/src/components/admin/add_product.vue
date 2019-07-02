@@ -116,7 +116,6 @@
         
         API().post('admin/add-product',formData,config)
         .then(res=>{
-          console.log(res.data);
           if(res.data.errors){
             if(res.data.errors[0].msg){
               this.flash(res.data.errors[0].msg,'error');

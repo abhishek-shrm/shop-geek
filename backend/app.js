@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 var session = require('express-session');
 var expressValidator = require('express-validator');
 var fileUpload = require('express-fileupload');
+var AWS=require('aws-sdk');
 
 //Init app
 var app = express();
@@ -54,6 +55,12 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
   console.log('Connected to MongoDB');
+});
+
+//s3
+AWS.config.update({
+  accessKeyId: process.env.ACCESS_KEY_ID,
+  secretAccessKey: process.env.SECRET_ACCESS_KEY
 });
 
 //models
