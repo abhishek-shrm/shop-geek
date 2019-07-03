@@ -75,11 +75,6 @@ router.post('/',(req,res)=>{
 
             if(imageFile!=''){
               var productImage=req.files.image.data;
-              // var path='public/product_images/'+product._id+'/'+imageFile;
-
-              // productImage.mv(path,err=>{
-              //   return console.log(err);
-              // });
               var s3 = new AWS.S3();
 
               var myKey=product._id+'/'+product.image;
@@ -100,9 +95,6 @@ router.post('/',(req,res)=>{
                   });
                 }
               });
-              // res.send({
-              //   success:'Product added successfully!!'
-              // });
             }
           }
         });

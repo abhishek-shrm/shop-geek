@@ -75,6 +75,7 @@ var editCategory = require('./routes/adminRoutes/editCategory');
 var deleteCategory = require('./routes/adminRoutes/deleteCategory');
 var adminProduct = require('./routes/adminRoutes/adminProduct');
 var addProduct = require('./routes/adminRoutes/addProduct');
+var editProduct = require('./routes/adminRoutes/editProduct');
 
 //Middlewares
 app.use('/admin/categories', adminCategory);
@@ -83,6 +84,7 @@ app.use('/admin/edit-category', editCategory);
 app.use('/admin/delete-category', deleteCategory);
 app.use('/admin/add-product', addProduct);
 app.use('/admin/products', adminProduct);
+app.use('/admin/edit-product',editProduct);
 
 
 //Start the server

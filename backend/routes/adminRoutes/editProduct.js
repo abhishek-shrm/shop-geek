@@ -1,17 +1,27 @@
 var express=require('express');
 var router=express.Router();
 var Category=require('../../models/category');
+var Product=require('../../models/product');
+const AWS= require('aws-sdk');
 
 //GET edit category
 
 router.get('/:id',(req,res)=>{
-
-  Category.findById({_id:req.params.id},(err,cat)=>{
+  Product.findById({_id:req.params.id},(err,product)=>{
     if(err){
       console.log(err);
-    }
-    else{
-      res.send(cat);
+    }else{
+      var s3=new AWS.S3();
+      var myKey=product._id+'/'+product.image;
+      var URL=s3.getSignedUrl('getObject',{
+          Bucket:process.env.BUCKET,
+          Key:`${myKey}`,
+          Expires: 1000
+      });
+      res.send({
+        product:product,
+        URL:URL
+      });
     }
   });
 });

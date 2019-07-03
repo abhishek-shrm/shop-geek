@@ -19,13 +19,21 @@ router.get('/',(req,res)=>{
 
     var s3 = new AWS.S3();
 
-    var myKey=products[2]._id+'/'+products[2].image;
+    // var myKey=products[2]._id+'/'+products[2].image;
 
-    let URL=s3.getSignedUrl('getObject', {
-      Bucket: 'shop-geek-products',
-      Key: `${myKey}`, //filename
-      Expires: 10 //time to expire in seconds
-  });
+  //   let URL=s3.getSignedUrl('getObject', {
+  //     Bucket: 'shop-geek-products',
+  //     Key: `${myKey}`, //filename
+  //     Expires: 10 //time to expire in seconds
+  // });
+    var URL=products.map(product=>{
+      var myKey=product._id+'/'+product.image;
+      return s3.getSignedUrl('getObject',{
+        Bucket:process.env.BUCKET,
+        Key:`${myKey}`,
+        Expires: 1000
+      });
+    });
 
     res.send({
       products:products,

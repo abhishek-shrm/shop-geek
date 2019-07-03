@@ -85,7 +85,7 @@ const routes=[
         component:()=>import('./components/admin/add_product.vue')
       },
       {
-        path:'edit-product',
+        path:'edit-product/:id',
         name:"editProduct",
         component:()=>import('./components/admin/edit_product.vue')
       },
