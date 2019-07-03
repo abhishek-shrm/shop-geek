@@ -26,6 +26,7 @@ export default {
 
   .block h1 {
     margin-top: 2em;
+    text-align: center;
   }
 
   section.card {

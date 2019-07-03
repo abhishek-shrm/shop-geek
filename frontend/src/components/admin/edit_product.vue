@@ -94,7 +94,45 @@
         this.fileName = this.image.name;
       },
       submitProduct(){
+        let formData=new FormData();
 
+        if(this.image==''){
+          this.image=this.fileName;
+        }
+        formData.append('image',this.image);
+        formData.append('title',this.title);
+        formData.append('description',this.description);
+        formData.append('price',this.price);
+        formData.append('category',this.category);
+
+        let config={
+          headers:{
+            'Content-Type': 'multipart/form-data'
+          }
+        };
+
+        API().post(`admin/edit-product/${this.id}`,formData,config)
+        .then(res=>{
+          if(res.data.errors){
+            if(res.data.errors[0].msg){
+              this.flash(res.data.errors[0].msg,'error');
+            }else if(res.data.errors){
+              this.flash(res.data.errors,'error');
+            }
+          }else if(res.data.success){
+            this.flash(res.data.success,'success');
+            this.title='';
+            this.image='';
+            this.description='';
+            this.price='';
+            this.category='';
+            this.url='';
+            this.fileName='';
+          }
+        })
+        .catch(error=>{
+          console.log(error);
+        });
       }
     },
     created() {
