@@ -84,7 +84,8 @@
         categoryResponses: '',
         fileName:'',  //file name of image
         image:'', //image file by user
-        url:''  //url of image uploaded by user
+        url:'',  //url of image uploaded by user
+        presentImage:''
       }
     },
     methods: {
@@ -104,7 +105,8 @@
         formData.append('description',this.description);
         formData.append('price',this.price);
         formData.append('category',this.category);
-
+        formData.append('presentImage',this.presentImage);
+        
         let config={
           headers:{
             'Content-Type': 'multipart/form-data'
@@ -152,6 +154,7 @@
           this.description = res.data.product.description;
           this.imageURL = res.data.URL;
           this.fileName=res.data.product.image;
+          this.presentImage=this.fileName;
         })
         .catch(error => {
           console.log(error);

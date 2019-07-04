@@ -35,14 +35,15 @@ router.post('/:id',(req,res)=>{
   var description=req.body.description;
   var price=req.body.price;
   var category=req.body.category;
-  var imageFile;
+  var presentImage=req.body.presentImage;
+  var imageFileName;
 
   //so that expressValidator does not throw error
   if(req.files!=null){
-    imageFile=req.files.image.name;
-    req.checkBody('image','Uploaded file is not an image').isImage(imageFile);
+    imageFileName=req.files.image.name;
+    req.checkBody('image','Uploaded file is not an image').isImage(imageFileName);
   }else if(req.files==null){
-    imageFile='';
+    imageFileName='';
   }
 
   var errors=req.validationErrors();
@@ -80,8 +81,8 @@ router.post('/:id',(req,res)=>{
             product.description=description;
             product.category=category;
             product.price=priceFlt;
-            if(imageFile!=''){
-              product.image=imageFile;
+            if(imageFileName!=''){
+              product.image=imageFileName;
             }
 
             product.save(err=>{
@@ -89,26 +90,39 @@ router.post('/:id',(req,res)=>{
                 console.log(err);
               }
               else{
-                if(imageFile!=''){
+                if(imageFileName!=''){
                   var productImage=req.files.image.data;
                   var s3 = new AWS.S3();
     
-                  var myKey=product._id+'/'+product.image;
+                  var uploadKey=product._id+'/'+product.image;
+                  var deleteKey=product._id+'/'+presentImage;
     
-                  var params = {
+                  var uploadParams = {
                     Bucket: process.env.BUCKET,
                     Body : productImage,
-                    Key : `${myKey}`
+                    Key : `${uploadKey}`
                   };
-    
-                  s3.upload(params,(err,data)=>{
+
+                  var deleteParams={
+                    Bucket:process.env.BUCKET,
+                    Key:`${deleteKey}`
+                  };
+                  s3.upload(uploadParams,(err,data)=>{
+                      if(err){
+                        console.log(err);
+                      }
+                      if(data){
+                        res.send({
+                        success:'Product edited successfully!!'
+                      });
+                    }
+                  });
+                  s3.deleteObject(deleteParams,(err,data)=>{
                     if(err){
                       console.log(err);
                     }
-                    if(data){
-                      res.send({
-                        success:'Product edited successfully!!'
-                      });
+                    else{
+
                     }
                   });
                 }
