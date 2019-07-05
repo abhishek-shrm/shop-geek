@@ -98,6 +98,22 @@
           this.count = res.data.count;
         })
         .catch(error => console.log(error));
+    },
+    methods: {
+      deleteProduct(id){
+        if(confirm("Do you really want to delete this product?")){
+          API().get(`admin/delete-product/${id}`)
+          .then(res=>{
+            if(res.data.success){
+              this.$router.push({name:'productPanel'});
+              this.flash(res.data.success,'success');
+            }
+          })
+          .catch(error=>{
+            console.log(error);
+          });
+        }
+      } 
     }
   }
 

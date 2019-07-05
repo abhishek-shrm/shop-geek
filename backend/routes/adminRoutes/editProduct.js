@@ -231,7 +231,7 @@ router.get('/galleryImages/:id',(req,res)=>{
     Prefix:`${listKey}`
   };
 
-  s3.listObjects(params,(err,data)=>{
+  s3.listObjectsV2(params,(err,data)=>{
     if(err){
       console.log(err);
     }
