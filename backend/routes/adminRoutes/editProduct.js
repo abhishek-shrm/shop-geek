@@ -3,6 +3,7 @@ var router=express.Router();
 var Category=require('../../models/category');
 var Product=require('../../models/product');
 const AWS= require('aws-sdk');
+var resizeImg=require('resize-img');
 
 //GET edit product
 
@@ -122,7 +123,6 @@ router.post('/:id',(req,res)=>{
                       console.log(err);
                     }
                     else{
-
                     }
                   });
                 }
@@ -133,6 +133,127 @@ router.post('/:id',(req,res)=>{
       }
     });
   }
+});
+
+//POST gallery images
+router.post('/gallery/:id',(req,res)=>{
+  var s3 =new AWS.S3();
+
+  var id=req.params.id;
+  var imageFile=req.files.file.data;
+  var imageName=req.files.file.name;
+  var thumbsFile;
+
+  imageKey=id+'/gallery/'+imageName;
+
+  resizeImg(imageFile,{width:100,height:100}).then(buf=>{
+    thumbsFile=buf;
+    var thumbsParams={
+      Bucket: process.env.BUCKET,
+      Body : thumbsFile,
+      Key : `${resizeImageKey}`
+    };
+    s3.upload(thumbsParams,(err,data)=>{
+      if(err){
+        console.log(err);
+      }
+      if(data){
+
+      }
+    });
+  });
+  resizeImageKey=id+'/gallery/thumbs/'+imageName;
+
+  var params={
+    Bucket: process.env.BUCKET,
+    Body : imageFile,
+    Key : `${imageKey}`
+  };
+
+  s3.upload(params,(err,data)=>{
+    if(err){
+      console.log(err);
+    }
+    if(data){
+      res.sendStatus(200);
+    }
+  });
+
+});
+
+//GET delete Gallery Images
+router.get('/delete-gallery/:id/:fileName',(req,res)=>{
+  var id=req.params.id;
+  var fileName=req.params.fileName;
+
+  var s3=new AWS.S3();
+
+  var deleteKey=id+'/gallery/'+fileName;
+  var deleteThumbsKey=id+'/gallery/thumbs/'+fileName;
+
+  var params={
+    Bucket:process.env.BUCKET,
+    Key:`${deleteKey}`
+  };
+
+  var thumbsParams={
+    Bucket:process.env.BUCKET,
+    Key:`${deleteThumbsKey}`
+  }
+
+  s3.deleteObject(params,(err,data)=>{
+    if(err){
+      console.log(err);
+    }
+    else{
+      s3.deleteObject(thumbsParams,(error,data)=>{
+        if(error){
+          console.log(error);
+        }
+        else{
+          res.sendStatus(200);
+        }
+      });
+    }
+  });
+});
+
+//GET gallery images
+router.get('/galleryImages/:id',(req,res)=>{
+  var id=req.params.id;
+  var listKey=id+'/gallery/';
+  var list;
+  var s3= new AWS.S3();
+
+  var params={
+    Bucket:process.env.BUCKET,
+    Delimiter:'/',
+    Prefix:`${listKey}`
+  };
+
+  s3.listObjects(params,(err,data)=>{
+    if(err){
+      console.log(err);
+    }
+    if(data){
+      list=data.Contents.map(image=>{
+        return image;
+      });
+      var galleryImageLink=list.map(listedImage=>{
+        var galleryImageKey=listedImage.Key;
+        return s3.getSignedUrl('getObject',{
+                 Bucket:process.env.BUCKET,
+                 Key:`${galleryImageKey}`,
+                 Expires: 1000
+               });
+      });
+      res.send({
+        list:list,
+        URL:galleryImageLink
+      });
+    }
+  });
+
 });
 
 //Exports

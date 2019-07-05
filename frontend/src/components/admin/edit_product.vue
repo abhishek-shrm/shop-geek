@@ -63,6 +63,16 @@
           <button class="button is-primary" :disabled="isDisabled" @click="submitProduct">Submit</button>
         </div>
       </div>
+      <div class="field">
+        <label class="label">Gallery Images</label>
+        <vue-dropzone ref="myVueDropzone" id="dropzone" :options="dropOptions"
+          @vdropzone-removed-file="removed" @vdropzone-mounted="manualAddFile"></vue-dropzone>
+      </div>
+      <div class="field">
+        <div class="control">
+          <button class="button is-primary" @click="submitGalleryImages">Upload Gallery Images</button>
+        </div>
+      </div>
     </div>
   </section>
 </template>
@@ -70,79 +80,132 @@
 <script>
   import API from '../../api'
   import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+  import vueDropzone from "vue2-dropzone";
 
   export default {
     data() {
       return {
         id: this.$route.params.id,
-        title:'',
-        category:'',
-        price:'',
-        description:'',
+        title: '',
+        category: '',
+        price: '',
+        description: '',
         imageURL: '', //image url of image on s3
         editor: ClassicEditor,
         categoryResponses: '',
-        fileName:'',  //file name of image
-        image:'', //image file by user
-        url:'',  //url of image uploaded by user
-        presentImage:''
+        fileName: '', //file name of image
+        image: '', //image file by user
+        url: '', //url of image uploaded by user
+        presentImage: '',
+        dropOptions: {
+          url: `http://localhost:3000/admin/edit-product/gallery/${this.$route.params.id}`,
+          thumbnailWidth: 150,
+          maxFiles: 8,
+          headers: {
+            "My-Awesome-Header": "header value"
+          },
+          addRemoveLinks: true,
+          autoProcessQueue: false,
+          parallelUploads:8
+        },
+        galleryList:'',
+        galleryURL:''
       }
     },
+    components: {
+      vueDropzone: vueDropzone
+    },
     methods: {
+
+      manualAddFile(){
+        API().get(`admin/edit-product/galleryImages/${this.$route.params.id}`)
+        .then(res=>{
+          this.galleryList=res.data.list;
+          this.galleryURL=res.data.URL;
+          for(var i=0;i<this.galleryList.length;i++){
+          
+            let file={
+              size:this.galleryList[i].Size,
+              name:this.galleryList[i].Key.split('/')[2],
+              type:'image/'+this.galleryList[i].Key.split('/')[2].split('.')[1]
+            };
+            let url=this.galleryURL[i];
+          
+            this.$refs.myVueDropzone.manuallyAddFile(file, url);
+          };
+        })
+        .catch(error=>{
+          console.log(error);
+        });
+
+      },
+      submitGalleryImages() {
+        this.$refs.myVueDropzone.processQueue();
+      },
+      removed(file) {
+        let deleteFileName=file.name;
+        API().get(`admin/edit-product/delete-gallery/${this.$route.params.id}/${deleteFileName}`)
+        .then(res=>{
+          this.flash('Image removed','error');
+        })
+        .catch(error=>{
+          console.log(error);
+        });
+      },
       onFileChange(e) {
         this.image = e.target.files[0];
         this.imageURL = URL.createObjectURL(this.image);
         this.fileName = this.image.name;
       },
-      submitProduct(){
-        let formData=new FormData();
+      submitProduct() {
+        let formData = new FormData();
 
-        if(this.image==''){
-          this.image=this.fileName;
+        if (this.image == '') {
+          this.image = this.fileName;
         }
-        formData.append('image',this.image);
-        formData.append('title',this.title);
-        formData.append('description',this.description);
-        formData.append('price',this.price);
-        formData.append('category',this.category);
-        formData.append('presentImage',this.presentImage);
-        
-        let config={
-          headers:{
+        formData.append('image', this.image);
+        formData.append('title', this.title);
+        formData.append('description', this.description);
+        formData.append('price', this.price);
+        formData.append('category', this.category);
+        formData.append('presentImage', this.presentImage);
+
+        let config = {
+          headers: {
             'Content-Type': 'multipart/form-data'
           }
         };
 
-        API().post(`admin/edit-product/${this.id}`,formData,config)
-        .then(res=>{
-          if(res.data.errors){
-            if(res.data.errors[0].msg){
-              this.flash(res.data.errors[0].msg,'error');
-            }else if(res.data.errors){
-              this.flash(res.data.errors,'error');
+        API().post(`admin/edit-product/${this.id}`, formData, config)
+          .then(res => {
+            if (res.data.errors) {
+              if (res.data.errors[0].msg) {
+                this.flash(res.data.errors[0].msg, 'error');
+              } else if (res.data.errors) {
+                this.flash(res.data.errors, 'error');
+              }
+            } else if (res.data.success) {
+              this.flash(res.data.success, 'success');
+              this.title = '';
+              this.image = '';
+              this.description = '';
+              this.price = '';
+              this.category = '';
+              this.url = '';
+              this.fileName = '';
             }
-          }else if(res.data.success){
-            this.flash(res.data.success,'success');
-            this.title='';
-            this.image='';
-            this.description='';
-            this.price='';
-            this.category='';
-            this.url='';
-            this.fileName='';
-          }
-        })
-        .catch(error=>{
-          console.log(error);
-        });
+          })
+          .catch(error => {
+            console.log(error);
+          });
       }
     },
     created() {
-       API().get('admin/categories')
+      API().get('admin/categories')
         .then(res => {
           this.categoryResponses = res.data;
         })
-        .catch(error=>{
+        .catch(error => {
           console.log(error);
         });
 
@@ -153,16 +216,16 @@
           this.price = res.data.product.price;
           this.description = res.data.product.description;
           this.imageURL = res.data.URL;
-          this.fileName=res.data.product.image;
-          this.presentImage=this.fileName;
+          this.fileName = res.data.product.image;
+          this.presentImage = this.fileName;
         })
         .catch(error => {
           console.log(error);
         })
     },
     computed: {
-      isDisabled(){
-        return this.title.length<2 || this.category.length<2 || this.description.length<2 || this.price==0;
+      isDisabled() {
+        return this.title.length < 2 || this.category.length < 2 || this.description.length < 2 || this.price == 0;
       }
     }
   }
@@ -185,11 +248,12 @@
     margin: auto 2em;
     margin-bottom: 3em;
   }
-  
-  #imgPreview{
-    width:128px;
-    height:128px;
+
+  #imgPreview {
+    width: 128px;
+    height: 128px;
   }
+
   @import "~bulma";
   @import "~buefy/src/scss/buefy";
 
