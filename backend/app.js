@@ -79,6 +79,7 @@ var editProduct = require('./routes/adminRoutes/editProduct');
 var deleteProduct=require('./routes/adminRoutes/deleteProduct');
 var catProduct=require('./routes/catProduct');
 var category=require('./routes/category');
+var productPage=require('./routes/productPage');
 
 //Middlewares
 app.use('/admin/categories', adminCategory);
@@ -91,6 +92,7 @@ app.use('/admin/edit-product',editProduct);
 app.use('/admin/delete-product',deleteProduct);
 app.use('/cat-product',catProduct);
 app.use('/category',category);
+app.use('/product-page',productPage);
 
 //Start the server
 var port = 3000;

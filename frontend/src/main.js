@@ -12,11 +12,13 @@ import CKEditor from '@ckeditor/ckeditor5-vue';
 import vue2Dropzone from 'vue2-dropzone';
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
 import VueCarousel from 'vue-carousel';
+import VueLazyLoad from 'vue-lazyload'
 
 
 Vue.use(Buefy);
 Vue.use( CKEditor );
 Vue.use(VueCarousel);
+Vue.use(VueLazyLoad);
 
 Vue.config.productionTip = false
 

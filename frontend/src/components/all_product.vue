@@ -6,7 +6,7 @@
     <div class="columns">
       <div class="column">
         <div class="card" v-for="(product,index) in products" :key="product._id">
-          <router-link :to="{name:'productPage',params:{productName:product.slug,id:product._id}}" tag="a">
+          <router-link :to="{name:'productPage',params:{productName:product.slug}}" tag="a">
             <div class="card-image">
             <img :src="imageURL[index]" id="cardImage">
           </div>
