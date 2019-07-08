@@ -15,7 +15,7 @@ router.get('/',(req,res)=>{
     count=c;
   });
 
-  Product.find((err,products)=>{
+  Product.find({}).sort({title:1}).exec((err,products)=>{
 
     var s3 = new AWS.S3();
 

@@ -80,7 +80,9 @@
     padding: 0;
     padding-left: 1em;
   }
-
+  #brand:hover{
+    transform: scale(1.1);
+  }
   .myCustomClass{
     margin-top: 4em;
   }

@@ -44,7 +44,7 @@ const routes=[
         component:()=>import('./components/contact.vue')
       },
       {
-        path:'product-page',
+        path:'product-page/:productName/:id',
         name:"productPage",
         component:()=>import('./components/product_page.vue')
       },

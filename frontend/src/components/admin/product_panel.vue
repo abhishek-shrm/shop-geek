@@ -3,6 +3,9 @@
     <div class="block">
       <h1 class="title is-2">Product Panel</h1>
     </div>
+    <div class="buttons is-centered">
+      <a href="/admin/add-product" class="button is-primary"> Add a new Product</a>
+    </div>
     <table v-if="wnWidth>1024" class="table is-striped is-hoverable">
       <thead>
         <tr>
@@ -156,6 +159,7 @@
   }
 
   .card {
+    height: 485.950;
     width: 300px;
     margin-bottom: 1em;
     border-radius: 25px 25px;

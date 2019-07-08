@@ -126,6 +126,11 @@ router.post('/:id',(req,res)=>{
                     }
                   });
                 }
+                else{
+                  res.send({
+                    success:'Product edited successfully!!'
+                  })
+                }
               }
             });
           }

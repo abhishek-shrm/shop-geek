@@ -2,7 +2,7 @@
   <div class="header">
     <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
-        <a id="brand" class="navbar-item" href="/" target="_blank">
+        <a id="brand" class="navbar-item" href="/">
           <img src="../assets/logo2.png" width="112" height="52">
         </a>
           <a class="navbar-item is-right mobileCart">
@@ -33,9 +33,12 @@
             </a>
 
             <div class="navbar-dropdown">
-              <a class="navbar-item">
+              <router-link :to="{name:'allProduct'}" class="navbar-item" tag="a">
                 All Products
-              </a>
+              </router-link>
+              <!-- <a class="navbar-item">
+                All Products
+              </a> -->
               <a class="navbar-item" v-for="category in categories" :key="category._id">
                 {{category.title}}
               </a>
@@ -109,6 +112,13 @@
 <style lang="scss" scoped>
   @import "~bulma/sass/utilities/_all";
 
+  #brand {
+    padding: 0;
+    padding-left: 1em;
+  }
+  #brand:hover{
+    transform: scale(1.1);
+  }
   .display-none{
     display:none !important;
   }
