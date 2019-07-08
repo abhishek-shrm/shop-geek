@@ -77,6 +77,8 @@ var adminProduct = require('./routes/adminRoutes/adminProduct');
 var addProduct = require('./routes/adminRoutes/addProduct');
 var editProduct = require('./routes/adminRoutes/editProduct');
 var deleteProduct=require('./routes/adminRoutes/deleteProduct');
+var catProduct=require('./routes/catProduct');
+var category=require('./routes/category');
 
 //Middlewares
 app.use('/admin/categories', adminCategory);
@@ -87,6 +89,8 @@ app.use('/admin/add-product', addProduct);
 app.use('/admin/products', adminProduct);
 app.use('/admin/edit-product',editProduct);
 app.use('/admin/delete-product',deleteProduct);
+app.use('/cat-product',catProduct);
+app.use('/category',category);
 
 //Start the server
 var port = 3000;

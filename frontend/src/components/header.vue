@@ -36,12 +36,9 @@
               <router-link :to="{name:'allProduct'}" class="navbar-item" tag="a">
                 All Products
               </router-link>
-              <!-- <a class="navbar-item">
-                All Products
-              </a> -->
-              <a class="navbar-item" v-for="category in categories" :key="category._id">
+              <router-link :to="{name:'catProduct',params:{category:category.slug}}" tag="a" class="navbar-item" v-for="category in categories" :key="category._id">
                 {{category.title}}
-              </a>
+              </router-link >
             </div>
           </div>
         </div>

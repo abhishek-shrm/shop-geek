@@ -34,7 +34,7 @@ const routes=[
         component:()=>import('./components/checkout.vue')
       },
       {
-        path:'cat-product',
+        path:'cat-product/:category',
         name:"catProduct",
         component:()=>import('./components/cat_product.vue')
       },
