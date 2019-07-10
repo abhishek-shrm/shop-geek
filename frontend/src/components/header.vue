@@ -7,7 +7,7 @@
         </a>
           <a class="navbar-item is-right mobileCart">
             <i class="fa" style="font-size:24px">&#xf07a;</i>
-            <span class='badge badge-warning' id='lblCartCount'> 5 </span>
+            <span class='badge badge-warning' id='lblCartCount'> {{$store.state.cartCount}} </span>
           </a>
         <a role="button" class="navbar-burger burger" @click="toggleClass" aria-label="menu" aria-expanded="false"
           data-target="navbarBasicExample">
@@ -46,7 +46,7 @@
         <div class="navbar-end">
           <a class="navbar-item desktopCart">
             <i class="fa" style="font-size:24px">&#xf07a;</i>
-            <span class='badge badge-warning' id='lblCartCount'> 5 </span>
+            <span class='badge badge-warning' id='lblCartCount'>{{$store.state.cartCount}}</span>
           </a>
           <div class="navbar-item">
             <div class="buttons">
@@ -92,6 +92,9 @@
       .catch(error=>{
         console.log(error);
       });
+    },
+    watch:{
+
     },
     methods: {
       toggleClass() {

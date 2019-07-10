@@ -29,9 +29,9 @@ const routes=[
         component:()=>import('./components/career.vue')
       },
       {
-        path:'checkout',
-        name:"Checkout",
-        component:()=>import('./components/checkout.vue')
+        path:'cart',
+        name:"cart",
+        component:()=>import('./components/cart.vue')
       },
       {
         path:'cat-product/:category',

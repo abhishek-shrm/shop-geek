@@ -15,131 +15,165 @@
           </li>
         </ul>
         <LightBox :images="images" ref="lightbox" :show-light-box="false">
-      </LightBox>
+        </LightBox>
       </div>
       <!-- content side -->
       <div class="column is-two-fifths" id="productText">
         <h2 class="title is-4">Price: <span><i class="fa fa-inr" style="font-size:1em"></i>{{product.price}}</span></h2>
-        <button class="button is-primary"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+        <div class="field is-horizontal">
+          <div class="select">
+            <select v-model="qty">
+              <option disabled value="">Qty</option>
+              <option v-for="qty in 10" :key="qty">
+                {{qty}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <button class="button is-primary" :disabled="qty==''" @click="addToCart(product._id,qty)"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
         <h3 class="title is-5">Description:</h3>
         <p v-html="product.description"></p>
       </div>
       <div class="column"></div>
-    </div> 
+    </div>
   </section>
 </template>
 
 <script>
-import API from '../api'
-import LightBox from 'vue-image-lightbox'
-require('vue-image-lightbox/dist/vue-image-lightbox.min.css');
+  import API from '../api'
+  import LightBox from 'vue-image-lightbox'
+  require('vue-image-lightbox/dist/vue-image-lightbox.min.css');
 
-export default {
-  data(){
-    return{
-      product:'',
-      imageURL:'',
-      galleryImagesURL:'',
-      thumbsURL:'',
-      images:[]
-    }
-  },
-  components: {
-    LightBox,
-  },
-  created(){
-    API().get(`product-page/${this.$route.params.productName}`)
-    .then(res=>{
-      this.product=res.data.product;
-      this.imageURL=res.data.imageURL;
-      this.galleryImagesURL=res.data.galleryImageLink;
-      this.thumbsURL=res.data.thumbsImageLink;
-      this.makeImageObject();
-    })
-    .catch(err=>{
-      console.log(err);
-    });
-  },
-  methods: {
-    makeImageObject(){
-       var initialObject={
-         thumb:this.imageURL,
-         src:this.imageURL
-       };
-       this.images.push(initialObject);
-       for(var i=0;i<this.galleryImagesURL.length;i++){
-        var obj={
-          thumb:this.thumbsURL[i],
-          src:this.galleryImagesURL[i]
-        };
-        this.images.push(obj);
+  export default {
+    data() {
+      return {
+        product: '',
+        imageURL: '',
+        galleryImagesURL: '',
+        thumbsURL: '',
+        images: [],
+        qty: ''
       }
     },
-    openGallery(index) {
-      this.$refs.lightbox.showImage(index)
+    components: {
+      LightBox,
+    },
+    created() {
+      API().get(`product-page/${this.$route.params.productName}`)
+        .then(res => {
+          this.product = res.data.product;
+          this.imageURL = res.data.imageURL;
+          this.galleryImagesURL = res.data.galleryImageLink;
+          this.thumbsURL = res.data.thumbsImageLink;
+          this.makeImageObject();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    methods: {
+      addToCart(ID,qty){
+        let item={
+          id:ID,
+          qty:parseInt(qty)
+        };
+        this.$store.commit('addToCart', item);
+      },
+      //for pushing link of image and thumbs into images array for lightbox
+      makeImageObject() {
+        var initialObject = {
+          thumb: this.imageURL,
+          src: this.imageURL
+        };
+        this.images.push(initialObject);
+        for (var i = 0; i < this.galleryImagesURL.length; i++) {
+          var obj = {
+            thumb: this.thumbsURL[i],
+            src: this.galleryImagesURL[i]
+          };
+          this.images.push(obj);
+        }
+      },
+      openGallery(index) {
+        this.$refs.lightbox.showImage(index)
+      }
     }
   }
-}
+
 </script>
 
 <style lang="scss" scoped>
-@import "~bulma/sass/utilities/_all";
+  @import "~bulma/sass/utilities/_all";
 
   .block>h1 {
     margin-top: 2em;
     text-align: center;
   }
+
   .columns {
     text-align: center;
-    .column{
-      ul{
-        margin-top:1em;
-        li{
-          img:hover{
-            border:2px $primary solid;
+
+    .column {
+      ul {
+        margin-top: 1em;
+
+        li {
+          img:hover {
+            border: 2px $primary solid;
           }
         }
       }
+
       h1 {
         margin-top: 2em;
         text-align: center;
       }
-      h2{
+
+      h2 {
         text-align: left;
-        margin-bottom:0.5em;
+        margin-bottom: 0.5em;
       }
-      h3{
+
+      h3 {
         text-align: left;
-        margin-bottom:0.5em;
+        margin-bottom: 0.5em;
       }
-      img{
-        height:20em;
+
+      img {
+        height: 20em;
       }
-      p{
-        font-size:0.8em;
-        text-align:left;
+
+      p {
+        font-size: 0.8em;
+        text-align: left;
       }
-      span{
-        color:#c73b1c;
+
+      span {
+        color: #c73b1c;
       }
-      button{
+
+      button {
         margin-bottom: 1em;
-        margin-left:0.5em;
-        i{
+        margin-left: 0.5em;
+
+        i {
           margin-right: 0.3em;
         }
       }
     }
   }
-  #productContent{
+
+  #productContent {
     margin-bottom: 1em;
   }
-  #productText{
+
+  #productText {
     margin-left: 1em;
     margin-right: 1em;
-    text-align:left;
+    text-align: left;
   }
 
-@import "~bulma";
-@import "~buefy/src/scss/buefy";
+  @import "~bulma";
+  @import "~buefy/src/scss/buefy";
+
 </style>
