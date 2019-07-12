@@ -5,7 +5,7 @@
         <a id="brand" class="navbar-item" href="/">
           <img src="../assets/logo2.png" width="112" height="52">
         </a>
-          <a class="navbar-item is-right mobileCart">
+          <a class="navbar-item is-right mobileCart" href="/cart">
             <i class="fa" style="font-size:24px">&#xf07a;</i>
             <span class='badge badge-warning' id='lblCartCount'> {{$store.state.cartCount}} </span>
           </a>
@@ -44,7 +44,7 @@
         </div>
 
         <div class="navbar-end">
-          <a class="navbar-item desktopCart">
+          <a class="navbar-item desktopCart" href="/cart">
             <i class="fa" style="font-size:24px">&#xf07a;</i>
             <span class='badge badge-warning' id='lblCartCount'>{{$store.state.cartCount}}</span>
           </a>

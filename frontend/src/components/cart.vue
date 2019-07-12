@@ -12,6 +12,18 @@ export default {
     return{
 
     }
+  },
+  created(){
+    API().post(`cart`,{
+        cart:this.$store.state.cart
+    })
+    .then(res=>{
+      console.log(res.data.products);
+      console.log(res.data.productImagesLink);
+    })
+    .catch(err=>{
+      console.log(err);
+    });
   }
 }
 </script>

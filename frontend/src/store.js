@@ -2,11 +2,16 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 Vue.use(Vuex);
+// window.localStorage.clear();
+let cart = window.localStorage.getItem('cart');
+let cartCount = window.localStorage.getItem('cartCount');
+console.log(cart);
+console.log(cartCount);
 
 export default new Vuex.Store({
   state: {
-    cart:[],
-    cartCount:0
+    cart:cart?JSON.parse(cart) :[],
+    cartCount:cartCount?cartCount:0
   },
   mutations: {
     addToCart(state,item){
@@ -15,6 +20,7 @@ export default new Vuex.Store({
         if(found.qty+item.qty<=10){
           found.qty=found.qty+item.qty;
           state.cartCount=state.cartCount+item.qty;
+          this.commit('saveCart');
         }else{
           alert('Maximum allowed quantity is 10');
         }
@@ -22,8 +28,13 @@ export default new Vuex.Store({
       else{
         state.cart.push(item);
         state.cartCount=state.cartCount+item.qty;
+        this.commit('saveCart');
       }
       console.log(state);
+    },
+    saveCart(state){
+      window.localStorage.setItem('cart', JSON.stringify(state.cart));
+      window.localStorage.setItem('cartCount', state.cartCount);
     }
   },
   actions: {
