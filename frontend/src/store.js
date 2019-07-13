@@ -5,8 +5,6 @@ Vue.use(Vuex);
 // window.localStorage.clear();
 let cart = window.localStorage.getItem('cart');
 let cartCount = window.localStorage.getItem('cartCount');
-console.log(cart);
-console.log(cartCount);
 
 export default new Vuex.Store({
   state: {
@@ -27,7 +25,7 @@ export default new Vuex.Store({
       }
       else{
         state.cart.push(item);
-        state.cartCount=state.cartCount+item.qty;
+        state.cartCount=parseInt(state.cartCount)+parseInt(item.qty);
         this.commit('saveCart');
       }
       console.log(state);
