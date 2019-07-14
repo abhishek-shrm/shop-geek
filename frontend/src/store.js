@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createMutationsSharer from "vuex-shared-mutations";
 
 Vue.use(Vuex);
 // window.localStorage.clear();
@@ -30,12 +31,38 @@ export default new Vuex.Store({
       }
       console.log(state);
     },
+    removeProduct(state,item){
+      for(let i=0;i<state.cart.length;i++){
+        if(state.cart[i].id==item.id){
+          let product=state.cart[i];
+          state.cartCount-=product.qty;
+          state.cart.splice(i,1);
+          this.commit('saveCart');
+        }
+      }
+    },
+    incQty(state,id){
+      for(let i=0;i<state.cart.length;i++){
+        if(state.cart[i].id==id){
+          state.cart[i].qty++;
+          state.cartCount++;
+          this.commit('saveCart');
+        }
+      }
+    },
+    decQty(state,id){
+      for(let i=0;i<state.cart.length;i++){
+        if(state.cart[i].id==id){
+          state.cart[i].qty--;
+          state.cartCount--;
+          this.commit('saveCart');
+        }
+      }
+    },
     saveCart(state){
       window.localStorage.setItem('cart', JSON.stringify(state.cart));
       window.localStorage.setItem('cartCount', state.cartCount);
     }
   },
-  actions: {
-
-  }
+  plugins: [createMutationsSharer({ predicate: ['addToCart','incQty','decQty','removeProduct', 'saveCart'] })]
 })

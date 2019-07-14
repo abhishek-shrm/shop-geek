@@ -3,8 +3,14 @@
     <div class="block">
       <h1 class="title is-3">Cart</h1>
     </div>
+    <div class="block browse" v-if="!cart.length">
+      <h1 class="title is-4">Your Cart is currently empty</h1>
+      <router-link :to="{name:'allProduct'}" class="button is-info" tag="button" >
+        Browse Products
+      </router-link>
+    </div>
 
-    <table v-if="wnWidth>1024" class="table is-striped is-hoverable">
+    <table v-if="wnWidth>1024 && cart.length" class="table is-striped is-hoverable">
       <thead>
         <tr>
           <th>Item</th>
@@ -28,7 +34,7 @@
                 <br>
                 <span class="tag is-primary is-rounded">{{product.category}}</span>
                 <br>
-                <button class="button is-rounded is-small is-danger remove" @click="removeProduct(product._id)">
+                <button class="button is-rounded is-small is-danger remove" @click="removeProduct(product)">
                   <span>Remove Product</span>
                   <span class="icon is-small">
                     <i class="fa fa-times"></i>
@@ -41,9 +47,9 @@
           <td><i class="fa fa-times"></i></td>
           <td>
             <div class="buttons has-addons is-centered">
-              <span class="button is-primary is-rounded" @click="incQty(product._id)">-</span>
+              <span class="button is-primary is-rounded" :disabled="product.qty<=1"  @click="product.qty--;decQty(product._id)">-</span>
               <span class="button is-static">{{product.qty}}</span>
-              <span class="button is-primary is-rounded" @click="decQty(product._id)">+</span>
+              <span class="button is-primary is-rounded" :disabled="product.qty>=10" @click="product.qty++;incQty(product._id)">+</span>
             </div>
           </td>
           <td><i class="fa fa-inr"></i> {{product.price*product.qty}}</td>
@@ -84,7 +90,8 @@
         imagesLink: '',
         wnWidth: window.screen.width,
         total: 0,
-        subTotals: []
+        subTotals: [],
+        cart:this.$store.state.cart
       }
     },
     created() {
@@ -104,13 +111,29 @@
     methods: {
       clearCart() {
         if (confirm("Do you really want to empty the cart?")) {
-
+          window.localStorage.clear();
+          this.$router.go();
         }
       },
-      removeProduct(id) {
+      removeProduct(product) {
         if (confirm("Do you really want to remove this product from cart?")) {
-
+          let item={
+            id:product._id,
+            qty:product.qty
+          };
+          this.$store.commit('removeProduct',item);
+          this.$router.go();
         }
+      },
+      incQty(id){
+        this.subTotals = this.products.map(product => product.price * product.qty);
+        this.total = this.subTotals.reduce((a, b) => a + b, 0);
+        this.$store.commit('incQty',id);
+      },
+      decQty(id){
+        this.subTotals = this.products.map(product => product.price * product.qty);
+        this.total = this.subTotals.reduce((a, b) => a + b, 0);
+        this.$store.commit('decQty',id);
       }
     }
   }
@@ -151,6 +174,10 @@
 
   .remove:hover {
     transform: scale(1.05);
+  }
+  .browse{
+    text-align: center;
+    margin-bottom: 2em;
   }
 
   @import "~bulma";
