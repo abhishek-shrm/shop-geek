@@ -29,7 +29,6 @@ export default new Vuex.Store({
         state.cartCount=parseInt(state.cartCount)+parseInt(item.qty);
         this.commit('saveCart');
       }
-      console.log(state);
     },
     removeProduct(state,item){
       for(let i=0;i<state.cart.length;i++){
