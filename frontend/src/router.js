@@ -57,6 +57,21 @@ const routes=[
         path:'register',
         name:"Register",
         component:()=>import('./components/register.vue')
+      },
+      {
+          path:'register/details',
+          name:"registerDetails",
+          component:()=>import('./components/registerDetails.vue')
+      },
+      {
+        path:'my-profile',
+        name:"myProfile",
+        component:()=>import('./components/my-profile.vue')
+      },
+      {
+        path:'edit-my-profile/:username',
+        name:"editMyProfile",
+        component:()=>import('./components/edit-my-profile.vue')
       }
     ]
   },

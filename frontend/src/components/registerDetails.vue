@@ -1,13 +1,13 @@
 <template>
   <section>
     <div class="block">
-      <h1 class="title is-3">Register</h1>
+      <h1 class="title is-3">Register Details</h1>
     </div>
     <div class="formInput">
       <div class="field">
         <label class="label">Username</label>
         <div class="control">
-          <input class="input" v-model="username" type="text" placeholder="Username">
+          <input class="input" v-model="username" type="text" placeholder="Username" disabled>
         </div>
       </div>
       <div class="field">
@@ -17,19 +17,22 @@
         </div>
       </div>
       <div class="field">
-        <label class="label">Password</label>
-        <div class="control">
-          <input class="input" v-model="password" type="password" placeholder="Password">
-        </div>
+        <label class="label">Mobile No.</label>
+        <p class="control has-icons-left">
+          <input class="input" v-model="mobile" type="number" placeholder="Mobile No.">
+          <span class="icon is-small is-left">+91</span>
+        </p>
       </div>
       <div class="field">
-        <label class="label">Confirm Password</label>
-        <div class="control">
-          <input class="input" v-model="confirmPassword" type="password" placeholder="Confirm Password">
-        </div>
+        <label class="label">Address</label>
+        <textarea id="" cols="30" rows="4" class="textarea" v-model="address" placeholder="Address"></textarea>
+      </div>
+      <div class="field">
+        <label class="label">PIN Code</label>
+        <input type="number" class="input" v-model="pinCode" placeholder="PIN Code">
       </div>
       <div class="control">
-        <button class="button is-primary" @click="registerUser">Register</button>
+        <button class="button is-primary" @click="registerDetails">Submit</button>
       </div>
     </div>
   </section>
@@ -40,13 +43,14 @@
     data() {
       return {
         username: '',
-        password: '',
-        confirmPassword: '',
-        email: ''
+        email: '',
+        mobile: '',
+        address: '',
+        pinCode: ''
       }
     },
     methods: {
-      registerUser() {
+      registerDetails() {
 
       }
     }
