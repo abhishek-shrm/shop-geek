@@ -13,7 +13,7 @@
       <div class="field">
         <label class="label">Email</label>
         <div class="control">
-          <input class="input" v-model="email" type="email" placeholder="Email">
+          <input class="input" v-model="email" type="email" placeholder="Email" disabled>
         </div>
       </div>
       <div class="field">

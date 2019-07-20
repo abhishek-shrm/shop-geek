@@ -3,7 +3,6 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 var mongoose = require('mongoose');
-var session = require('express-session');
 var expressValidator = require('express-validator');
 var fileUpload = require('express-fileupload');
 var AWS=require('aws-sdk');
@@ -17,12 +16,7 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 app.use(bodyParser.json());
-app.use(session({
-  secret: 'secret developer',
-  resave: true,
-  saveUninitialized: true,
-  //cookie:{secure:true}
-}));
+
 //custom validator for images
 app.use(expressValidator({
   customValidators: {
@@ -81,6 +75,7 @@ var catProduct=require('./routes/catProduct');
 var category=require('./routes/category');
 var productPage=require('./routes/productPage');
 var cart=require('./routes/cart');
+var register=require('./routes/register');
 
 //Middlewares
 app.use('/admin/categories', adminCategory);
@@ -95,6 +90,7 @@ app.use('/cat-product',catProduct);
 app.use('/category',category);
 app.use('/product-page',productPage);
 app.use('/cart',cart);
+app.use('/register',register);
 
 //Start the server
 var port = 3000;

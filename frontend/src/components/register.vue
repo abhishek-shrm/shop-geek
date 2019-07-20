@@ -24,9 +24,15 @@
       </div>
       <div class="field">
         <label class="label">Confirm Password</label>
-        <div class="control">
+        <p class="control has-icons-right">
           <input class="input" v-model="confirmPassword" type="password" placeholder="Confirm Password">
-        </div>
+          <span v-if="(password!==confirmPassword) && password.length" class="icon is-small is-right" style="color:red">
+            <i class="fa fa-times"></i>
+          </span>
+          <span v-if="(password==confirmPassword) && password.length" class="icon is-small is-right" style="color:green">
+            <i class="fa fa-check"></i>
+          </span>
+        </p>
       </div>
       <div class="control">
         <button class="button is-primary" @click="registerUser">Register</button>
