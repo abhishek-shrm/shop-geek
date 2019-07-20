@@ -4,6 +4,7 @@ var bcrypt=require('bcryptjs');
 var JWT=require('jsonwebtoken');
 var User=require('../models/user');
 var UserDetails=require('../models/userDetails');
+var checkAuth=require('./check-auth');
 
 //POST register user
 router.post('/',(req,res)=>{
@@ -81,10 +82,49 @@ router.post('/',(req,res)=>{
 });
 
 //POST register user details
-router.post('/details',(req,res)=>{
-  //authenticate the registerToken
+router.post('/details',checkAuth,(req,res)=>{ //checkauth authenticates the registerToken
+  var email=req.body.email;
+  var username=req.body.username;
+  var address=req.body.address;
+  var pinCode=req.body.pinCode;
+  var mobile=req.body.mobile;
   //check mobile no. is of 10 chars
-  //create userDetails data with username and email in common
+  req.checkBody('mobile','Invalid Mobile No.').isNumeric();
+  req.checkBody('pinCode','PIN Code must be Numeric').isNumeric();
+  req.checkBody('mobile','Mobile No. must be of 10 digits').isLength({min:10,max:10});
+  req.checkBody('pinCode','PIN Code must be of 6 digits').isLength({min:6,max:6});
+
+  var errors=req.validationErrors();
+  if(errors){
+    res.send({
+      email:email,
+      username:username,
+      address:address,
+      pinCode:pinCode,
+      mobile:mobile,
+      errors:errors
+    });
+  }
+  else{
+    //create userDetails data with username and email in common
+    var userDetails=new UserDetails({
+      username:username,
+      email:email,
+      mobile:parseInt(mobile),
+      address:address,
+      pinCode:parseInt(pinCode)
+    });
+    userDetails.save(err=>{
+      if(err){
+        console.log(err);
+      }
+      else{
+        res.send({
+          success:'Details Registered successfully!!'
+        });
+      }
+    })
+  }
 });
 
 //export router

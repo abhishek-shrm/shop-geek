@@ -19,7 +19,7 @@
       <div class="field">
         <label class="label">Mobile No.</label>
         <p class="control has-icons-left">
-          <input class="input" v-model="mobile" type="number" placeholder="Mobile No.">
+          <input class="input" v-model="mobile" type="tel" placeholder="Mobile No." pattern="[0-9]{10}">
           <span class="icon is-small is-left">+91</span>
         </p>
       </div>
