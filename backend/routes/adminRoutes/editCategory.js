@@ -1,10 +1,11 @@
 var express=require('express');
 var router=express.Router();
 var Category=require('../../models/category');
+var checkAuth=require('../check-auth');
 
 //GET edit category
 
-router.get('/:id',(req,res)=>{
+router.get('/:id',checkAuth,(req,res)=>{
 
   Category.findById({_id:req.params.id},(err,cat)=>{
     if(err){
@@ -17,7 +18,7 @@ router.get('/:id',(req,res)=>{
 });
 
 //POST edit category
-router.post('/:id',(req,res)=>{
+router.post('/:id',checkAuth,(req,res)=>{
   var title=req.body.title;
   var slug=title.replace(/\s+/g,'-').toLowerCase();
   var id=req.params.id;

@@ -6,9 +6,10 @@ var mkdirp = require('mkdirp');
 var fs = require('fs-extra');
 var resizeImg = require('resize-img');
 const AWS= require('aws-sdk');
+var checkAuth=require('../check-auth');
 
 
-router.post('/',(req,res)=>{
+router.post('/',checkAuth,(req,res)=>{
 
   var title=req.body.title;
   var slug=title.replace(/\s+/g,'-').toLowerCase();

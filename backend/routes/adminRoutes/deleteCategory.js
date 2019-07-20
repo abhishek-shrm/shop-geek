@@ -1,8 +1,9 @@
 var express=require('express');
 var router=express.Router();
 var Category=require('../../models/category');
+var checkAuth=require('../check-auth');
 
-router.get('/:id',(req,res)=>{
+router.get('/:id',checkAuth,(req,res)=>{
 
   Category.findByIdAndRemove(req.params.id,err=>{
     if(err){

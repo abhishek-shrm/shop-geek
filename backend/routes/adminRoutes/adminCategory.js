@@ -1,9 +1,10 @@
 var express=require('express');
 var router=express.Router();
 var Category=require('../../models/category');
+var checkAuth=require('../check-auth');
 
 //GET categories
-router.get('/',(req,res)=>{
+router.get('/',checkAuth,(req,res)=>{
   Category.find({}).sort({sorting:1}).exec((err,cats)=>{
     if(err){
       console.log(err);
@@ -15,7 +16,7 @@ router.get('/',(req,res)=>{
 });
 
 //POST reorder categories
-router.post('/reorder-category',(req,res)=>{
+router.post('/reorder-category',checkAuth,(req,res)=>{
   var ids=req.body.ids;
   var id=req.body.id;
   var count=0;

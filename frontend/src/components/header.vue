@@ -78,7 +78,7 @@
       }
     },
     created() {
-      API().get('admin/categories')
+      API().get('category')
       .then(res => {
         this.categories = res.data;
         if(this.wnWidth>1024){

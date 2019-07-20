@@ -32,7 +32,7 @@
       }
     },
     created() {
-      API().get('admin/products')
+      API().get('products')
         .then(res => {
           this.products = res.data.products;
           this.imageURL = res.data.url;

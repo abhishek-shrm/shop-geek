@@ -1,8 +1,9 @@
 var express=require('express');
 var router=express.Router();
 var Category=require('../../models/category');
+var checkAuth=require('../check-auth');
 
-router.post('/',(req,res)=>{
+router.post('/',checkAuth,(req,res)=>{
 
   var title=req.body.title;
   var slug=title.replace(/\s+/g,'-').toLowerCase();

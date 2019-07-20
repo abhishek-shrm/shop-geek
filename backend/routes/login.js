@@ -4,7 +4,6 @@ var bcrypt=require('bcryptjs');
 var JWT=require('jsonwebtoken');
 var User=require('../models/user');
 var UserDetails=require('../models/userDetails');
-var checkAuth=require('./check-auth');
 
 //POST user login
 router.post('/',(req,res)=>{

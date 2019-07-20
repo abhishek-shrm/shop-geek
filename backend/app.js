@@ -77,6 +77,7 @@ var productPage=require('./routes/productPage');
 var cart=require('./routes/cart');
 var register=require('./routes/register');
 var login=require('./routes/login');
+var products=require('./routes/products');
 
 //Middlewares
 app.use('/admin/categories', adminCategory);
@@ -93,6 +94,7 @@ app.use('/product-page',productPage);
 app.use('/cart',cart);
 app.use('/register',register);
 app.use('/login',login);
+app.use('/products',products);
 
 //Start the server
 var port = 3000;

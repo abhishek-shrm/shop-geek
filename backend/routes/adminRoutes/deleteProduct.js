@@ -2,8 +2,9 @@ var express=require('express');
 var router=express.Router();
 var Product=require('../../models/product');
 const AWS= require('aws-sdk');
+var checkAuth=require('../check-auth');
 
-router.get('/:id',(req,res)=>{
+router.get('/:id',checkAuth,(req,res)=>{
 
       var s3=new AWS.S3();
       var thumbsKeyList,galleryKeyList,keyList;
@@ -108,9 +109,6 @@ router.get('/:id',(req,res)=>{
           });
         }
       });
-      // res.send({
-      //   success:'Category deleted! Please refresh the page to see changes occured'
-      // });
     });
 
 //Exports
