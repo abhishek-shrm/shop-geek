@@ -2,6 +2,14 @@ var mongoose=require('mongoose');
 
 //Product Schema
 var UserDetailsSchema=mongoose.Schema({
+  firstName:{
+    type:String,
+    required:true
+  },
+  lastName:{
+    type:String,
+    required:true
+  },
   username:{
     type:String,
     required:true,
@@ -15,16 +23,23 @@ var UserDetailsSchema=mongoose.Schema({
   },
   mobile:{
     type:Number,
-    unique:true
+    required:true
   },
   address:{
+    type:String,
+    required:true
+  },
+  city:{
+    type:String,
+    required:true
+  },
+  state:{
     type:String,
     required:true
   },
   pinCode:{
     type:Number
   }
-
 });
 
 var Product=module.exports=mongoose.model('UserDetails',UserDetailsSchema);

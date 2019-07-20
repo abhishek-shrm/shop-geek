@@ -10,7 +10,10 @@ let cartCount = window.localStorage.getItem('cartCount');
 export default new Vuex.Store({
   state: {
     cart:cart?JSON.parse(cart) :[],
-    cartCount:cartCount?cartCount:0
+    cartCount:cartCount?cartCount:0,
+    registerToken:null,
+    registerUsername:null,
+    registerEmail:null
   },
   mutations: {
     addToCart(state,item){
@@ -61,6 +64,11 @@ export default new Vuex.Store({
     saveCart(state){
       window.localStorage.setItem('cart', JSON.stringify(state.cart));
       window.localStorage.setItem('cartCount', state.cartCount);
+    },
+    removeRegister(state){
+      state.registerEmail=null;
+      state.registerToken=null;
+      state.registerUsername=null;
     }
   },
   plugins: [createMutationsSharer({ predicate: ['addToCart','incQty','decQty','removeProduct', 'saveCart'] })]

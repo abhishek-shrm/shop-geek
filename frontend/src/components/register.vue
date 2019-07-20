@@ -35,13 +35,14 @@
         </p>
       </div>
       <div class="control">
-        <button class="button is-primary" @click="registerUser">Register</button>
+        <button class="button is-primary" :disabled="isDisabled" @click="registerUser">Register</button>
       </div>
     </div>
   </section>
 </template>
 
 <script>
+  import API from '../api'
   export default {
     data() {
       return {
@@ -53,7 +54,32 @@
     },
     methods: {
       registerUser() {
-
+        var userData={
+          username:this.username,
+          password:this.password,
+          email:this.email
+        };
+        API().post('register',userData)
+        .then(res=>{
+          if(res.data.errors){
+            this.flash(res.data.errors,'error');
+          }
+          if(res.data.success){
+            this.$store.state.registerEmail=res.data.email;
+            this.$store.state.registerToken=res.data.token;
+            this.$store.state.registerUsername=res.data.username;
+            this.$router.push({ name:'registerDetails' });
+            this.flash(res.data.success,'success');
+          }
+        })
+        .catch(error=>{
+          console.log(error);
+        });
+      }
+    },
+    computed:{
+      isDisabled(){
+        return this.username.length<2 || this.password.length<2 || this.confirmPassword.length<2 || this.email.length<3;
       }
     }
   }
@@ -64,7 +90,7 @@
   @import "~bulma/sass/utilities/_all";
 
   .block>h1 {
-    margin-top: 2em;
+    margin-top: 1em;
     text-align: center;
   }
 

@@ -150,7 +150,9 @@
   .mobileCart{
     margin-left: auto;
   }
-
+  .myCustomClass{
+    margin-top: 4em;
+  }
   @import "~bulma";
   @import "~buefy/src/scss/buefy";
 

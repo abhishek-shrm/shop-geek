@@ -69,7 +69,7 @@ router.post('/',(req,res)=>{
                     email:email,
                     username:username,
                     token:token,
-                    success:'You are registered successfully'
+                    success:'You are registered successfully. Please submit your remaining details'
                   });
                 }
               });
@@ -88,6 +88,10 @@ router.post('/details',checkAuth,(req,res)=>{ //checkauth authenticates the regi
   var address=req.body.address;
   var pinCode=req.body.pinCode;
   var mobile=req.body.mobile;
+  var firstName=req.body.firstName;
+  var lastName=req.body.lastName;
+  var city=req.body.city;
+  var state=req.body.state;
   //check mobile no. is of 10 chars
   req.checkBody('mobile','Invalid Mobile No.').isNumeric();
   req.checkBody('pinCode','PIN Code must be Numeric').isNumeric();
@@ -102,16 +106,24 @@ router.post('/details',checkAuth,(req,res)=>{ //checkauth authenticates the regi
       address:address,
       pinCode:pinCode,
       mobile:mobile,
+      firstName:firstName,
+      lastName:lastName,
+      city:city,
+      state:state,
       errors:errors
     });
   }
   else{
     //create userDetails data with username and email in common
     var userDetails=new UserDetails({
+      firstName:firstName,
+      lastName:lastName,
       username:username,
       email:email,
       mobile:parseInt(mobile),
       address:address,
+      city:city,
+      state:state,
       pinCode:parseInt(pinCode)
     });
     userDetails.save(err=>{
