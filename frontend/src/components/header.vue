@@ -66,7 +66,7 @@
               <a class="button is-light" v-if="!this.$store.state.loginUsername" href="/login">
                 Log in
               </a>
-              <a class="button is-primary" v-if="(this.$store.state.isAdmin==true)&&this.$store.state.loginUsername" target="_blank" href="/admin">
+              <a class="button is-primary" v-if="this.$store.state.isAdmin" target="_blank" href="/admin">
                 Admin Area
               </a>
               <a class="button is-danger" v-if="this.$store.state.loginUsername" @click="logout">

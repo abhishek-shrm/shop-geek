@@ -18,7 +18,7 @@ var UserSchema=mongoose.Schema({
     required:true
   },
   admin:{
-    type:Boolean,
+    type:Number,
     required:true
   }
 });

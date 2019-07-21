@@ -20,7 +20,7 @@ export default new Vuex.Store({
     loginToken:loginToken?loginToken:null,
     loginUsername:loginUsername?loginUsername:null,
     loginTokenTime:null,
-    isAdmin:isAdmin?isAdmin:null
+    isAdmin:isAdmin?isAdmin:0
   },
   mutations: {
     addToCart(state,item){
@@ -82,7 +82,7 @@ export default new Vuex.Store({
       state.loginToken=user.token;
       state.loginUsername=user.username;
       state.isAdmin=user.admin;
-      window.localStorage.setItem('loginToken',state.registerToken);
+      window.localStorage.setItem('loginToken',state.loginToken);
       window.localStorage.setItem('loginUsername',state.loginUsername);
       window.localStorage.setItem('isAdmin',state.isAdmin);
     },
@@ -90,7 +90,7 @@ export default new Vuex.Store({
       state.loginToken=null;
       state.loginUsername=null;
       state.loginTokenTime=null;
-      state.isAdmin=null;
+      state.isAdmin=0;
       window.localStorage.clear();
     }
   },

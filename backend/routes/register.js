@@ -50,7 +50,7 @@ router.post('/',(req,res)=>{
                 username:username,
                 email:email,
                 password:hash,
-                admin:false
+                admin:0
               });
               user.save(error=>{
                 if(error){
