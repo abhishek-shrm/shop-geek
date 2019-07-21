@@ -17,13 +17,15 @@
         </div>
       </div>
       <div class="control">
-        <button class="button is-info"  @click="loginUser">Login</button>
+        <button class="button is-info" :disabled="isDisabled"  @click="loginUser">Login</button>
       </div>
     </div>
   </section>  
 </template>
 
 <script>
+import API from '../api'
+
 export default {
   data(){
     return{
@@ -33,7 +35,32 @@ export default {
   },
   methods: {
     loginUser(){
-
+      API().post('login',{
+        username:this.username,
+        password:this.password
+      })
+      .then(res=>{
+        if(res.data.errors){
+          this.flash(res.data.errors,'error');
+        }else if(res.data.success){
+          var user={
+            username:res.data.username,
+            token:res.data.token,
+            admin:res.data.admin
+          };
+          this.$store.commit('login',user);
+          this.$router.push({name:'Home'});
+          this.flash(res.data.success,'success');
+        }
+      })
+      .catch(error=>{
+        console.log(error);
+      });
+    }
+  },
+  computed:{
+    isDisabled(){
+      return this.password.length<2 || this.username.length<2;
     }
   }
 }

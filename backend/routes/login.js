@@ -32,6 +32,7 @@ router.post('/',(req,res)=>{
           res.send({
             username:user.username,
             token:token,
+            admin:user.admin,
             success:`Welcome! ${user.username} to SHOP-GEEK`
           });
         }

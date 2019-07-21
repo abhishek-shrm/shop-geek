@@ -6,6 +6,9 @@ Vue.use(Vuex);
 // window.localStorage.clear();
 let cart = window.localStorage.getItem('cart');
 let cartCount = window.localStorage.getItem('cartCount');
+let loginUsername=window.localStorage.getItem('loginUsername');
+let loginToken=window.localStorage.getItem('loginToken');
+let isAdmin=window.localStorage.getItem('isAdmin');
 
 export default new Vuex.Store({
   state: {
@@ -13,7 +16,11 @@ export default new Vuex.Store({
     cartCount:cartCount?cartCount:0,
     registerToken:null,
     registerUsername:null,
-    registerEmail:null
+    registerEmail:null,
+    loginToken:loginToken?loginToken:null,
+    loginUsername:loginUsername?loginUsername:null,
+    loginTokenTime:null,
+    isAdmin:isAdmin?isAdmin:null
   },
   mutations: {
     addToCart(state,item){
@@ -69,6 +76,22 @@ export default new Vuex.Store({
       state.registerEmail=null;
       state.registerToken=null;
       state.registerUsername=null;
+    },
+    login(state,user){
+      //window.localStorage.clear();
+      state.loginToken=user.token;
+      state.loginUsername=user.username;
+      state.isAdmin=user.admin;
+      window.localStorage.setItem('loginToken',state.registerToken);
+      window.localStorage.setItem('loginUsername',state.loginUsername);
+      window.localStorage.setItem('isAdmin',state.isAdmin);
+    },
+    logout(state){
+      state.loginToken=null;
+      state.loginUsername=null;
+      state.loginTokenTime=null;
+      state.isAdmin=null;
+      window.localStorage.clear();
     }
   },
   plugins: [createMutationsSharer({ predicate: ['addToCart','incQty','decQty','removeProduct', 'saveCart'] })]
