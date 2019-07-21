@@ -26,11 +26,19 @@
     data(){
       return{
         id:this.$route.params.id,
-        category:''
+        category:'',
+        auth:'',
+        axiosConfig:''
       }
     },
     created(){
-      API().get(`admin/edit-category/${this.id}`)
+      this.auth='Bearer '+ this.$store.state.loginToken;
+      this.axiosConfig={
+          headers:{
+            'Authorization':this.auth
+          }
+        };
+      API().get(`admin/edit-category/${this.id}`,this.axiosConfig)
       .then(res=>{
         this.category=res.data.title;
       })
@@ -42,7 +50,7 @@
       editCategory(){
         API().post(`admin/edit-category/${this.id}`,{
           title:this.category
-        })
+        },this.axiosConfig)
         .then(res=>{
           if(res.data.error){
             this.flash(res.data.error,'error');

@@ -109,7 +109,9 @@
           parallelUploads:8
         },
         galleryList:'',
-        galleryURL:''
+        galleryURL:'',
+        auth:'',
+        axiosConfig:''
       }
     },
     components: {
@@ -201,7 +203,13 @@
       }
     },
     created() {
-      API().get('admin/categories')
+      this.auth='Bearer '+ this.$store.state.loginToken;
+      this.axiosConfig={
+          headers:{
+            'Authorization':this.auth
+          }
+        };
+      API().get('admin/categories',this.axiosConfig)
         .then(res => {
           this.categoryResponses = res.data;
         })

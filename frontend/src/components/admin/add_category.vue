@@ -25,14 +25,24 @@ import API from '../../api'
 
     data(){
       return{
-        category:''
+        category:'',
+        auth:'',
+        axiosConfig:''
       }
+    },
+    created(){
+      this.auth='Bearer '+ this.$store.state.loginToken;
+      this.axiosConfig={
+          headers:{
+            'Authorization':this.auth
+          }
+        };
     },
     methods: {
       submitCategory(){
         API().post('admin/add-category',{
           title:this.category
-        })
+        },this.axiosConfig)
         .then(res=>{
           if(res.data.error){
             this.flash(res.data.error,'error');

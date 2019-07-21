@@ -9,6 +9,7 @@ let cartCount = window.localStorage.getItem('cartCount');
 let loginUsername=window.localStorage.getItem('loginUsername');
 let loginToken=window.localStorage.getItem('loginToken');
 let isAdmin=window.localStorage.getItem('isAdmin');
+// let loginTokenExpirationTime=window.localStorage.getItem('loginTokenExpirationTime');
 
 export default new Vuex.Store({
   state: {
@@ -19,7 +20,7 @@ export default new Vuex.Store({
     registerEmail:null,
     loginToken:loginToken?loginToken:null,
     loginUsername:loginUsername?loginUsername:null,
-    loginTokenTime:null,
+    // loginTokenExpirationTime:loginTokenExpirationTime?loginTokenExpirationTime:null,
     isAdmin:isAdmin?isAdmin:0
   },
   mutations: {
@@ -82,17 +83,33 @@ export default new Vuex.Store({
       state.loginToken=user.token;
       state.loginUsername=user.username;
       state.isAdmin=user.admin;
+      // const now = new Date();
+      // const expirationTime=new Date(now.getTime() + 86340000); //86340000 is 1 min less than 24 hours
+      // state.loginTokenExpirationTime=expirationTime;
       window.localStorage.setItem('loginToken',state.loginToken);
       window.localStorage.setItem('loginUsername',state.loginUsername);
       window.localStorage.setItem('isAdmin',state.isAdmin);
+      // window.localStorage.setItem('loginTokenExpirationTime',state.loginTokenExpirationTime);
     },
     logout(state){
       state.loginToken=null;
       state.loginUsername=null;
-      state.loginTokenTime=null;
+      // state.loginTokenExpirationTime=null;
       state.isAdmin=0;
       window.localStorage.clear();
-    }
+    },
+    // autoLogout(state){
+    //   const token=window.localStorage.getItem('loginToken');
+    //   if(!token){
+    //     return
+    //   }
+    //   const expirationTime=window.localStorage.getItem('loginTokenExpirationTime');
+    //   const now =new Date();
+    //   if(now>=expirationTime){
+    //     console.log('hi');
+    //     this.commit('logout');
+    //   }
+    // }
   },
   plugins: [createMutationsSharer({ predicate: ['addToCart','incQty','decQty','removeProduct', 'saveCart'] })]
 })

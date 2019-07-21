@@ -51,14 +51,22 @@
       return {
         ab: '',
         oldIndex:'',
-        newIndex:''
+        newIndex:'',
+        auth:'',
+        axiosConfig:''
       }
     },
     components:{
       draggable
     },
     created() {
-      API().get('admin/categories')
+      this.auth='Bearer '+ this.$store.state.loginToken;
+      this.axiosConfig={
+          headers:{
+            'Authorization':this.auth
+          }
+        };
+      API().get('admin/categories',this.axiosConfig)
         .then(res => {
           this.ab = res.data;
         })
@@ -73,7 +81,7 @@
         API().post('/admin/categories/reorder-category',{
           id:event.item.id,
           ids:this.ab.map(element=>element._id)
-        }).then(res=>{
+        },this.axiosConfig).then(res=>{
           console.log(res);
         })
         .catch(error=>{
@@ -82,7 +90,7 @@
       },
       deleteCategory(id){
         if(confirm("Do you really want to delete this category?")){
-          API().get(`admin/delete-category/${id}`)
+          API().get(`admin/delete-category/${id}`,this.axiosConfig)
           .then(res=>{
             if(res.data.success){
               this.$router.push({name:'categoryPanel'});

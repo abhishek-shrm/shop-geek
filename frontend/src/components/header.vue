@@ -53,7 +53,7 @@
         </div>
 
         <div class="navbar-end">
-          <p class="navbar-item desktopHello" v-if="this.$store.state.loginUsername"><strong>Hi, {{$store.state.loginUsername}}</strong></p>
+          <p class="navbar-item desktopHello" v-if="this.$store.state.loginUsername && wnWidth>1024"><strong>Hi, {{$store.state.loginUsername}}</strong></p>
           <a class="navbar-item desktopCart" href="/cart">
             <i class="fa" style="font-size:24px">&#xf07a;</i>
             <span class='badge badge-warning' id='lblCartCount'>{{$store.state.cartCount}}</span>
@@ -66,7 +66,7 @@
               <a class="button is-light" v-if="!this.$store.state.loginUsername" href="/login">
                 Log in
               </a>
-              <a class="button is-primary" v-if="this.$store.state.isAdmin" target="_blank" href="/admin">
+              <a class="button is-primary" v-if="this.$store.state.isAdmin==1" target="_blank" href="/admin">
                 Admin Area
               </a>
               <a class="button is-danger" v-if="this.$store.state.loginUsername" @click="logout">
@@ -103,7 +103,6 @@
         if(this.wnWidth<1024){
           document.querySelector('.navbar-dropdown').classList.add('display-none');
           document.querySelector('.desktopCart').classList.add('display-none');
-          document.querySelector('.desktopHello').classList.add('display-none');
         }
       })
       .catch(error=>{

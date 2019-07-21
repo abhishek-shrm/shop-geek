@@ -90,11 +90,19 @@
         products: '',
         imageURL: '',
         count: '',
-        wnWidth: window.screen.width
+        wnWidth: window.screen.width,
+        auth:'',
+        axiosConfig:''
       }
     },
     created() {
-      API().get('admin/products')
+      this.auth='Bearer '+ this.$store.state.loginToken;
+      this.axiosConfig={
+          headers:{
+            'Authorization':this.auth
+          }
+      };
+      API().get('admin/products',this.axiosConfig)
         .then(res => {
           this.products = res.data.products;
           this.imageURL = res.data.url;
@@ -105,7 +113,7 @@
     methods: {
       deleteProduct(id){
         if(confirm("Do you really want to delete this product?")){
-          API().get(`admin/delete-product/${id}`)
+          API().get(`admin/delete-product/${id}`,this.axiosConfig)
           .then(res=>{
             if(res.data.success){
               this.$router.push({name:'productPanel'});

@@ -82,11 +82,19 @@
         categoryResponses: '',
         url: '',
         fileName: '',
-        image:''
+        image:'',
+        auth:'',
+        axiosConfig:''
       }
     },
     created() {
-      API().get('admin/categories')
+      this.auth='Bearer '+ this.$store.state.loginToken;
+      this.axiosConfig={
+          headers:{
+            'Authorization':this.auth
+          }
+      };
+      API().get('admin/categories',this.axiosConfig)
         .then(res => {
           this.categoryResponses = res.data;
         })
@@ -110,7 +118,8 @@
 
         let config={
           headers:{
-            'Content-Type': 'multipart/form-data'
+            'Content-Type': 'multipart/form-data',
+            'Authorization':this.auth
           }
         };
         

@@ -3,8 +3,9 @@ var router=express.Router();
 var Category=require('../models/category');
 var Product=require('../models/product');
 const AWS= require('aws-sdk');
+var checkAuth=require('./check-auth');
 
-router.post('/',(req,res)=>{
+router.post('/',checkAuth,(req,res)=>{
   var cart=req.body.cart;
   var products=[];
   var productImagesLink=[];

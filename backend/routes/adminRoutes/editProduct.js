@@ -4,11 +4,10 @@ var Category=require('../../models/category');
 var Product=require('../../models/product');
 const AWS= require('aws-sdk');
 var resizeImg=require('resize-img');
-var checkAuth=require('../check-auth');
 
 //GET edit product
 
-router.get('/:id',checkAuth,(req,res)=>{
+router.get('/:id',(req,res)=>{
   Product.findById({_id:req.params.id},(err,product)=>{
     if(err){
       console.log(err);
@@ -29,7 +28,7 @@ router.get('/:id',checkAuth,(req,res)=>{
 });
 
 //POST edit product
-router.post('/:id',checkAuth,(req,res)=>{
+router.post('/:id',(req,res)=>{
 
   var id=req.params.id;
   var title=req.body.title;
@@ -142,7 +141,7 @@ router.post('/:id',checkAuth,(req,res)=>{
 });
 
 //POST gallery images
-router.post('/gallery/:id',checkAuth,(req,res)=>{
+router.post('/gallery/:id',(req,res)=>{
   var s3 =new AWS.S3();
 
   var id=req.params.id;
@@ -188,7 +187,7 @@ router.post('/gallery/:id',checkAuth,(req,res)=>{
 });
 
 //GET delete Gallery Images
-router.get('/delete-gallery/:id/:fileName',checkAuth,(req,res)=>{
+router.get('/delete-gallery/:id/:fileName',(req,res)=>{
   var id=req.params.id;
   var fileName=req.params.fileName;
 
@@ -225,7 +224,7 @@ router.get('/delete-gallery/:id/:fileName',checkAuth,(req,res)=>{
 });
 
 //GET gallery images
-router.get('/galleryImages/:id',checkAuth,(req,res)=>{
+router.get('/galleryImages/:id',(req,res)=>{
   var id=req.params.id;
   var listKey=id+'/gallery/';
   var list;
