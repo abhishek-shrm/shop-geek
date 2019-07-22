@@ -1,9 +1,21 @@
 <template>
   <section>
-  <div class="block">
-      <h1 class="title is-3">Edit Profile</h1>
-  </div>
-      <div class="formInput">
+    <div class="block">
+      <h1 class="title is-3">Edit My Profile</h1>
+    </div>
+    <div class="formInput">
+      <div class="field">
+        <label class="label">First Name</label>
+        <div class="control">
+          <input class="input" v-model="firstName" type="text" placeholder="First Name">
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Last Name</label>
+        <div class="control">
+          <input class="input" v-model="lastName" type="text" placeholder="Last Name">
+        </div>
+      </div>
       <div class="field">
         <label class="label">Username</label>
         <div class="control">
@@ -13,13 +25,13 @@
       <div class="field">
         <label class="label">Email</label>
         <div class="control">
-          <input class="input" v-model="email" type="email" placeholder="Email">
+          <input class="input" v-model="email" type="email" placeholder="Email" disabled>
         </div>
       </div>
       <div class="field">
         <label class="label">Mobile No.</label>
         <p class="control has-icons-left">
-          <input class="input" v-model="mobile" type="number" placeholder="Mobile No.">
+          <input class="input" v-model="mobile" type="tel" placeholder="Mobile No." pattern="[0-9]{10}">
           <span class="icon is-small is-left">+91</span>
         </p>
       </div>
@@ -28,30 +40,108 @@
         <textarea id="" cols="30" rows="4" class="textarea" v-model="address" placeholder="Address"></textarea>
       </div>
       <div class="field">
+        <label class="label">City</label>
+        <div class="control">
+          <input class="input" v-model="city" type="text" placeholder="City">
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">State</label>
+        <div class="control">
+          <input class="input" v-model="state" type="text" placeholder="State">
+        </div>
+      </div>
+      <div class="field">
         <label class="label">PIN Code</label>
         <input type="number" class="input" v-model="pinCode" placeholder="PIN Code">
       </div>
       <div class="control">
-        <button class="button is-primary"  @click="editProfile">Submit</button>
+        <button class="button is-primary" :disabled="isDisabled" @click="editProfile">Submit</button>
       </div>
     </div>
-  </section>  
+  </section>
 </template>
 
 <script>
+
+import API from '../api'
+
 export default {
   data(){
     return{
-      username:'',
-      email:'',
-      mobile:'',
-      address:'',
-      pinCode:''
+        firstName:'',
+        lastName:'',
+        username: '',
+        email: '',
+        mobile: '',
+        address: '',
+        pinCode: '',
+        auth:'',
+        city:'',
+        state:'',
+        auth:'',
+        axiosConfig:''
     }
+  },
+  created(){
+    this.auth='Bearer '+ this.$store.state.loginToken;
+    this.axiosConfig={
+      headers:{
+        'Authorization':this.auth
+      }
+    };
+    API().post('my-profile',{
+      username:this.$store.state.loginUsername
+    },this.axiosConfig)
+    .then(res=>{
+      this.username=res.data.username;
+      this.firstName=res.data.firstName;
+      this.lastName=res.data.lastName;
+      this.email=res.data.email;
+      this.address=res.data.address;
+      this.pinCode=res.data.pinCode;
+      this.mobile=res.data.mobile;
+      this.city=res.data.city;
+      this.state=res.data.state;
+    })
+    .catch(error=>{
+      console.log(error);
+    });
   },
   methods: {
     editProfile(){
-
+      var userDetails={
+        firstName:this.firstName,
+        lastName:this.lastName,
+        username:this.username,
+        email:this.email,
+        mobile:this.mobile,
+        address:this.address,
+        city:this.city,
+        state:this.state,
+        pinCode:this.pinCode
+      };
+      API().post('my-profile/edit',userDetails,this.axiosConfig)
+      .then(res=>{
+        if(res.data.errors){
+          if(res.data.errors[0].msg){
+            this.flash(res.data.errors[0].msg,'error');
+          }else if(res.data.errors){
+            this.flash(res.data.errors,'error');
+          }
+        }else if(res.data.success){
+          this.$router.push({name:'myProfile'});
+          this.flash(res.data.success,'success');
+        }
+      })
+      .catch(error=>{
+        console.log(error);
+      });
+    }
+  },
+  computed:{
+    isDisabled(){
+      return this.mobile.length<10 || this.state.length<2 || this.city.length<2 || this.firstName.length<1 || this.lastName.length<1 || this.address.length<5 || this.pinCode.length<6;
     }
   }
 }
@@ -61,7 +151,7 @@ export default {
 @import "~bulma/sass/utilities/_all";
 
   .block>h1 {
-    margin-top: 2em;
+    margin-top: 1em;
     text-align: center;
   }
 

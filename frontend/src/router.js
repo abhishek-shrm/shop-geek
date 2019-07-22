@@ -91,7 +91,7 @@ const routes=[
         }
       },
       {
-        path:'edit-my-profile/:username',
+        path:'edit-my-profile',
         name:"editMyProfile",
         component:()=>import('./components/edit-my-profile.vue'),
         beforeEnter: (to, from, next) => {

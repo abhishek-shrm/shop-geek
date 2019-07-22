@@ -1,7 +1,6 @@
 var express=require('express');
 var router=express.Router();
 var Cart=require('../models/cart');
-const AWS= require('aws-sdk');
 var checkAuth=require('./check-auth');
 
 //upload Cart
