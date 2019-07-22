@@ -1,6 +1,6 @@
 var mongoose=require('mongoose');
 
-//Product Schema
+//User Schema
 var UserSchema=mongoose.Schema({
   username:{
     type:String,

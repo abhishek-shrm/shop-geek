@@ -182,13 +182,21 @@
         wnWidth: window.screen.width,
         total: 0,
         subTotals: [],
-        cart: this.$store.state.cart
+        cart: this.$store.state.cart,
+        auth:'',
+        axiosConfig:''
       }
     },
     created() {
+      this.auth='Bearer '+ this.$store.state.loginToken;
+      this.axiosConfig={
+          headers:{
+            'Authorization':this.auth
+          }
+      };
       API().post(`cart`, {
           cart: this.$store.state.cart
-        })
+        },this.axiosConfig)
         .then(res => {
           this.products = res.data.products;
           this.imagesLink = res.data.productImagesLink;
@@ -202,7 +210,7 @@
     methods: {
       clearCart() {
         if (confirm("Do you really want to empty the cart?")) {
-          window.localStorage.clear();
+          this.$store.commit('clearCart');
           this.$router.go();
         }
       },
@@ -216,7 +224,7 @@
           document.getElementById(product._id).classList.add('display-none');
           API().post(`cart`, {
               cart: this.$store.state.cart
-            })
+            },this.axiosConfig)
             .then(res => {
               this.products = res.data.products;
               this.imagesLink = res.data.productImagesLink;

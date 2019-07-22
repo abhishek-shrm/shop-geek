@@ -5,6 +5,7 @@ var Product=require('../models/product');
 const AWS= require('aws-sdk');
 var checkAuth=require('./check-auth');
 
+//GET cart items
 router.post('/',checkAuth,(req,res)=>{
   var cart=req.body.cart;
   var products=[];

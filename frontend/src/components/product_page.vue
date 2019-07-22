@@ -20,7 +20,8 @@
       <!-- content side -->
       <div class="column is-two-fifths" id="productText">
         <h2 class="title is-4">Price: <span><i class="fa fa-inr" style="font-size:1em"></i>{{product.price}}</span></h2>
-        <div class="field is-horizontal">
+        <p style="margin-bottom:1em;" v-if="!this.$store.state.loginUsername">Please Login to purchase the product</p>
+        <div class="field is-horizontal" v-if="this.$store.state.loginUsername">
           <div class="select">
             <select v-model="qty">
               <option disabled value="">Qty</option>
@@ -30,7 +31,7 @@
             </select>
           </div>
         </div>
-        <button class="button is-primary" :disabled="qty==''" @click="addToCart(product._id,qty)"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+        <button class="button is-primary" v-if="this.$store.state.loginUsername" :disabled="qty==''" @click="addToCart(product._id,qty)"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
         <h3 class="title is-5">Description:</h3>
         <p v-html="product.description"></p>
       </div>

@@ -46,7 +46,9 @@ export default {
           var user={
             username:res.data.username,
             token:res.data.token,
-            admin:res.data.admin
+            admin:res.data.admin,
+            cart:res.data.cart,
+            cartCount:res.data.cartCount
           };
           this.$store.commit('login',user);
           this.$router.push({name:'Home'});

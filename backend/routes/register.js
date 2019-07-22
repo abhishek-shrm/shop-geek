@@ -4,6 +4,7 @@ var bcrypt=require('bcryptjs');
 var JWT=require('jsonwebtoken');
 var User=require('../models/user');
 var UserDetails=require('../models/userDetails');
+var Cart=require('../models/cart');
 var checkAuth=require('./check-auth');
 
 //POST register user
@@ -57,19 +58,33 @@ router.post('/',(req,res)=>{
                   console.log(error);
                 }
                 else{
-                  //sign a registerToken
-                  const token=JWT.sign({
-                    email:email,
-                    username:username
-                  },process.env.JWT_SECRET,{
-                    expiresIn:60*30
-                  });
-                  //send registerToken
-                  res.send({
-                    email:email,
+                  //initialize cart for user in database
+                  var userCart=new Cart({
                     username:username,
-                    token:token,
-                    success:'You are registered successfully. Please submit your remaining details'
+                    cart:[],
+                    cartCount:0
+                  });
+
+                  userCart.save(cartError=>{
+                    if(cartError){
+                      console.log(cartError);
+                    }
+                    else{
+                      //sign a registerToken
+                      const token=JWT.sign({
+                        email:email,
+                        username:username
+                      },process.env.JWT_SECRET,{
+                        expiresIn:60*30
+                      });
+                      //send registerToken
+                      res.send({
+                        email:email,
+                        username:username,
+                        token:token,
+                        success:'You are registered successfully. Please submit your remaining details'
+                      });
+                    }
                   });
                 }
               });
