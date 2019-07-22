@@ -5,6 +5,7 @@ var JWT=require('jsonwebtoken');
 var User=require('../models/user');
 var UserDetails=require('../models/userDetails');
 var Cart=require('../models/cart');
+var Order=require('../models/order');
 var checkAuth=require('./check-auth');
 
 //POST register user
@@ -70,19 +71,31 @@ router.post('/',(req,res)=>{
                       console.log(cartError);
                     }
                     else{
-                      //sign a registerToken
-                      const token=JWT.sign({
-                        email:email,
-                        username:username
-                      },process.env.JWT_SECRET,{
-                        expiresIn:60*30
-                      });
-                      //send registerToken
-                      res.send({
-                        email:email,
+                      //initialize orders for user in database
+                      var userOrders=new Order({
                         username:username,
-                        token:token,
-                        success:'You are registered successfully. Please submit your remaining details'
+                        orders:[]
+                      });
+
+                      userOrders.save(orderError=>{
+                        if(orderError){
+                          console.log(orderError);
+                        }else{
+                          //sign a registerToken
+                          const token=JWT.sign({
+                            email:email,
+                            username:username
+                          },process.env.JWT_SECRET,{
+                            expiresIn:60*30
+                          });
+                          //send registerToken
+                          res.send({
+                            email:email,
+                            username:username,
+                            token:token,
+                            success:'You are registered successfully. Please submit your remaining details'
+                          });                          
+                        }
                       });
                     }
                   });

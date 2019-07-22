@@ -103,6 +103,21 @@ const routes=[
         }
       },
       {
+        path:'payment-page',
+        name:"paymentPage",
+        component:()=>import('./components/payment.vue'),
+        beforeEnter: (to, from, next) => {
+          if(store.state.loginToken && (store.state.cart!=[]) && (from.name=='cart')){
+            next();
+          }
+          else if(store.state.loginToken && (store.state.cart!=[]) && (from.name!='cart')){
+            next('/');
+          }else{
+            next('/login');
+          }
+        }
+      },
+      {
         path:'my-orders',
         name:'myOrders',
         component:()=>import('./components/my-orders.vue'),

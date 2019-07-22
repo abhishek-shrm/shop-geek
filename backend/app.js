@@ -80,6 +80,7 @@ var login=require('./routes/login');
 var products=require('./routes/products');
 var syncCart=require('./routes/sync-cart');
 var myProfile=require('./routes/profile');
+var payment=require('./routes/payment');
 
 //Middlewares
 app.use('/admin/categories', adminCategory);
@@ -99,6 +100,7 @@ app.use('/login',login);
 app.use('/products',products);
 app.use('/sync-cart',syncCart);
 app.use('/my-profile',myProfile);
+app.use('/payment-page',payment);
 
 //Start the server
 var port = 3000;

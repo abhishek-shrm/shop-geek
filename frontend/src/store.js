@@ -122,6 +122,8 @@ export default new Vuex.Store({
     clearCart(state){
       window.localStorage.removeItem('cart');
       window.localStorage.removeItem('cartCount');
+      state.cart=[];
+      state.cartCount=0;
       var auth='Bearer '+ state.loginToken;
       var axiosConfig={
         headers:{

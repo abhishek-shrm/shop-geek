@@ -247,7 +247,7 @@
         this.$store.commit('decQty', id);
       },
       checkOut(cart){
-
+        this.$router.push({name:'paymentPage'});
       }
     }
   }
