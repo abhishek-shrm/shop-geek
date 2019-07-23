@@ -4,13 +4,13 @@
       <div class="content has-text-centered">
         <div class="columns">
           <div class="column is-4">
-            <a href="/about-us" target="_blank" style="color:#3FE0D0">About Us</a>
+            <a href="/about-us" style="color:#3FE0D0">About Us</a>
           </div>
           <div class="column is-4">
-            <a href="/careers" target="_blank" style="color:#3FE0D0">Careers</a>
+            <a href="/careers" style="color:#3FE0D0">Careers</a>
           </div>
           <div class="column is-4">
-            <a href="/contact" target="_blank" style="color:#3FE0D0">Contact Us</a>
+            <a href="/contact" style="color:#3FE0D0">Contact Us</a>
           </div>
         </div>
         <div class="icons">
