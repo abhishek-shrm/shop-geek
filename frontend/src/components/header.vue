@@ -24,11 +24,6 @@
           <a class="navbar-item" href="/">
             Home
           </a>
-
-          <a class="navbar-item" href="/admin/categories">
-            Categories
-          </a>
-
           <div class="navbar-item has-dropdown is-hoverable" @click="toggleDropdown">
             <a class="navbar-link">
               Products
