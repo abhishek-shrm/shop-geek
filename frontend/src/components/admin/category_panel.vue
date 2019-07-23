@@ -2,8 +2,7 @@
   <section>
     <div class="block">
       <h1 class="title is-2">Category Panel</h1>
-      <p class="content is-small">You can change the order of categories by dragging them.(Only available in Desktop
-        version)</p>
+      <p class="content is-small">You can change the order of categories by dragging them.</p>
     </div>
     <div class="buttons is-centered">
       <a href="/admin/add-category" class="button is-primary"> Add a new Category</a>
