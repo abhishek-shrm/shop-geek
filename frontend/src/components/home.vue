@@ -1,15 +1,15 @@
 <template>
   <section>
 
-    <carousel :per-page="1" :autoplay="true" :loop="true">
+    <carousel :per-page="1" :paginationEnabled="false" :autoplay="true" :loop="true">
       <slide>
-        <img src="../assets/logo2.png" alt="">
+        <img src="../../public/images/carousel/1.jpg" alt="">
       </slide>
       <slide>
-        <img src="../assets/logo2.png" alt="">
+        <img src="../../public/images/carousel/2.jpg" alt="">
       </slide>
       <slide>
-        <img src="../assets/logo2.png" alt="">
+        <img src="../../public/images/carousel/3.jpg" alt="">
       </slide>
     </carousel>
 
@@ -17,33 +17,30 @@
       <div class="column">
         <div class="card">
           <div class="card-image">
-            <img src="../assets/logo2.png" id="cardImage">
+            <img src="../../public/images/cards/1.jpg" id="cardImage">
           </div>
           <div class="card-content">
-            <p class="title is-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus accusantium aut at
-              necessitatibus vitae eligendi eveniet ratione velit qui modi!</p>
+            <p class="title is-5">We bring High-quality IT products to you at the lowest prices.</p>
           </div>
         </div>
       </div>
       <div class="column">
         <div class="card">
           <div class="card-image">
-            <img src="../assets/logo2.png" id="cardImage">
+            <img src="../../public/images/cards/2.jpg" id="cardImage">
           </div>
           <div class="card-content">
-            <p class="title is-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus accusantium aut at
-              necessitatibus vitae eligendi eveniet ratione velit qui modi!</p>
+            <p class="title is-5">We deliver your order in 48-hours across whole Delhi-NCR.</p>
           </div>
         </div>
       </div>
       <div class="column">
         <div class="card">
           <div class="card-image">
-            <img src="../assets/logo2.png" id="cardImage">
+            <img src="../../public/images/cards/3.jpg" id="cardImage">
           </div>
           <div class="card-content">
-            <p class="title is-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus accusantium aut at
-              necessitatibus vitae eligendi eveniet ratione velit qui modi!</p>
+            <p class="title is-5">We provide 24x7 customer support for your queries.</p>
           </div>
         </div>
       </div>
@@ -92,15 +89,15 @@
       </li>
     </ul>
 
-    <carousel :per-page="1" :autoplay="true" :loop="true" id="featureImages">
+    <carousel :per-page="1" :paginationEnabled="false" :autoplay="true" :loop="true" id="featureImages">
       <slide>
-        <img src="../assets/logo2.png" alt="">
+        <img src="../../public/images/carousel/4.jpg" alt="">
       </slide>
       <slide>
-        <img src="../assets/logo2.png" alt="">
+        <img src="../../public/images/carousel/5.jpg" alt="">
       </slide>
       <slide>
-        <img src="../assets/logo2.png" alt="">
+        <img src="../../public/images/carousel/6.jpg" alt="">
       </slide>
     </carousel>
   </section>
@@ -122,7 +119,6 @@
   .steps-segment:after {
     background-color: #57e3ad;
   }
-
   .steps-marker {
     background-color: #57e3ad !important;
   }
@@ -168,7 +164,6 @@
   #features{
     margin-top: 2em;;
   }
-
   @import "~bulma";
   @import "~buefy/src/scss/buefy";
 

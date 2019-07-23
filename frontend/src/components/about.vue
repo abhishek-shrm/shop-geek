@@ -5,7 +5,7 @@
     </div>
     <div class="box">
       <h2 class="title is-5">
-        We bring IT products to you at cheapest price.
+        We bring IT products to you at lowest prices.
       </h2>
       <h2 class="title is-5">
         We have 1000+ &#x1F601; customers.
