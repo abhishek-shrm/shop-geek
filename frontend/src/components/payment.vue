@@ -131,7 +131,10 @@
         name:'',
         address:'',
         mobile:'',
-        email:''
+        email:'',
+        city:'',
+        state:'',
+        pinCode:''
       }
     },
     created() {
@@ -166,6 +169,9 @@
         this.address=res.data.address;
         this.mobile=res.data.mobile;
         this.email=res.data.email;
+        this.city=res.data.city;
+        this.state=res.data.state;
+        this.pinCode=res.data.pinCode;
       })
       .catch(error=>{
         console.log(error);
@@ -189,6 +195,9 @@
           mobile:this.mobile,
           email:this.email,
           address:this.address,
+          city:this.city,
+          state:this.state,
+          pinCode:this.pinCode,
           orderId:orderId,
           time:time,
           cart:cart,

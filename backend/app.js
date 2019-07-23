@@ -81,6 +81,7 @@ var products=require('./routes/products');
 var syncCart=require('./routes/sync-cart');
 var myProfile=require('./routes/profile');
 var payment=require('./routes/payment');
+var myOrders=require('./routes/my-orders');
 
 //Middlewares
 app.use('/admin/categories', adminCategory);
@@ -101,6 +102,7 @@ app.use('/products',products);
 app.use('/sync-cart',syncCart);
 app.use('/my-profile',myProfile);
 app.use('/payment-page',payment);
+app.use('/my-orders',myOrders);
 
 //Start the server
 var port = 3000;

@@ -47,7 +47,7 @@
           <a class="navbar-item" v-if="this.$store.state.loginUsername" href="/my-profile">
             My Profie
           </a>
-          <a class="navbar-item" v-if="this.$store.state.loginUsername" href="#">
+          <a class="navbar-item" v-if="this.$store.state.loginUsername" href="/my-orders">
             My Orders
           </a>
         </div>
