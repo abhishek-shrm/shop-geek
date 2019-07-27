@@ -92,20 +92,19 @@
       API().get('category')
       .then(res => {
         this.categories = res.data;
-        if(this.wnWidth>1024){
-          document.querySelector('.mobileCart').classList.add('display-none');
-        }
-        if(this.wnWidth<1024){
-          document.querySelector('.navbar-dropdown').classList.add('display-none');
-          document.querySelector('.desktopCart').classList.add('display-none');
-        }
       })
       .catch(error=>{
         console.log(error);
       });
     },
-    watch:{
-
+    mounted(){
+      if(this.wnWidth>1024){
+        document.querySelector('.mobileCart').classList.add('display-none');
+      }
+      if(this.wnWidth<1024){
+        document.querySelector('.navbar-dropdown').classList.add('display-none');
+        document.querySelector('.desktopCart').classList.add('display-none');
+      }
     },
     methods: {
       toggleClass() {
